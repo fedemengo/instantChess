@@ -1,3 +1,6 @@
+var flag = 0;
+var initPos;
+var oldData;
 // target elements with the "draggable" class
 interact('.draggable')
 	.draggable({
@@ -18,45 +21,42 @@ interact('.draggable')
 		// call this function on every dragend event
 		onend: function (event) {
 			var target = event.target,
-				x = Math.round(((parseFloat(target.getAttribute('data-x')) || 0) + event.dx)/45)*45,
-				y = Math.round(((parseFloat(target.getAttribute('data-y')) || 0) + event.dy)/45)*45;
+				x = Math.round((parseFloat(target.getAttribute('data-x')))/45)*45,
+				y = Math.round((parseFloat(target.getAttribute('data-y')))/45)*45;
 
 			target.style.webkitTransform = target.style.transform = 'translate(' + x + 'px, ' + y + 'px)';
 			target.setAttribute('data-x', x);
 			target.setAttribute('data-y', y);
 
-			var rowSkip = parseInt(Math.round(x/45)), colSkip = parseInt(Math.round(y/45));
-
-			if(window.location.search.split("c=")[1] == 'w') colSkip = -colSkip; // WHITE BOARD
-			else rowSkip = -rowSkip; // BLACK BOARD
-
-			var currentRow = parseInt(target.getAttribute('row'))+colSkip;
-			var currentCol = String.fromCharCode(target.getAttribute('col').charCodeAt(0)+rowSkip);
-
-			console.log("[" + currentCol + ", " + currentRow + "]");
-
-			sendWithSocket("isTake", {
-				row: currentRow,
-				col: currentCol
-			});
-
+			var data = position(target, parseInt(Math.round(y/45)), parseInt(Math.round(x/45)));
+			flag = 0;
 
 			sendWithSocket("move", {
-				color: target.id[0],
 				piece: target.id,
 				posX: -x,
 				posY: -y,
-				row: currentRow,
-				col: currentCol
+				row: data.x,
+				col: data.y,
+				oldRow: oldData.x,
+				oldCol: oldData.y
 			});
 		}
 	});
 
 	function dragMoveListener (event) {
-		var target = event.target,
+		var target = event.target;
+
 		// keep the dragged position in the data-x/data-y attributes
-			x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx,
+		var x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx,
 			y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+
+		if(!flag){
+			flag = 1;
+			oldData = position(target,
+				parseInt(Math.round((Math.round(x/45)*45)/45)),
+				parseInt(Math.round((Math.round(y/45)*45)/45))
+			);
+		}
 
 		// translate the element
 		target.style.webkitTransform = target.style.transform = 'translate(' + x + 'px, ' + y + 'px)';
@@ -67,3 +67,14 @@ interact('.draggable')
 
 // this is used later in the resizing and gesture demos
 window.dragMoveListener = dragMoveListener;
+
+function position(target, colSkip, rowSkip){
+	if(window.location.search.split("c=")[1] == 'w')
+		colSkip = -colSkip; // WHITE BOARD
+	else
+		rowSkip = -rowSkip; // BLACK BOARD
+	return {
+		x: parseInt(target.getAttribute('row'))+colSkip,
+		y: String.fromCharCode(target.getAttribute('col').charCodeAt(0)+rowSkip)
+	};
+}

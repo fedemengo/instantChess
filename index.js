@@ -4,6 +4,11 @@ var io = require('socket.io')(http);
 var express = require('express');
 var sha1 = require('sha1');
 
+app.use("/img", express.static(__dirname + '/img'));
+app.use("/js", express.static(__dirname + '/js'));
+app.use("/style", express.static(__dirname + '/style'));
+app.use("/node_modules/socket.io-client/dist/", express.static(__dirname + '/node_modules/socket.io-client/dist/'));
+
 var board = {
     "A1": "wr1",
     "B1": "wn1",
@@ -38,23 +43,17 @@ var board = {
     "F7": "bp3",
     "G7": "bp2",
     "H7": "bp1"
-
 };
 
-app.use("/img", express.static(__dirname + '/img'));
-app.use("/js", express.static(__dirname + '/js'));
-app.use("/style", express.static(__dirname + '/style'));
-app.use("/node_modules/socket.io-client/dist/", express.static(__dirname + '/node_modules/socket.io-client/dist/'));
+var current_board = {};
 
 app.get('/', function(req, res){
-    if(!req.query.id){
-        var connectionHash = sha1(req);
-        res.redirect('/play?id=' + connectionHash + '&c=b');
-    }
+    res.redirect('/play?id=' + sha1(req) + '&c=w');
 });
 
 app.get('/play', function (req, res) {
     if(req.query.c == 'w'){
+        current_board = board;
         res.sendFile(__dirname + '/white.html');
     } else {
         res.sendFile(__dirname + '/black.html');
@@ -64,30 +63,56 @@ app.get('/play', function (req, res) {
 io.on('connection', function(socket){
 
     socket.on('move', function(data){
-        console.log(data.piece + ": [" + data.col + ", " + data.row + "]");
-        for(var key in board){
+        console.log("socket: move");
+        console.log(log(data.piece) + ": [" + data.col + ", " + data.row + "]\n");
+
+        // remove position of old piece
+        for(var key in board)
             if(board[key] == data.piece)
                 delete board[key];
-        }
+
+        // check if takes
         if(board[data.col + data.row] != null){
             data.take = board[data.col + data.row];
-            delete board[data.col + data.row];
         }
+
+        // update position
         board[data.col + data.row] = data.piece;
-        socket.broadcast.emit('notify', data);
+        io.emit('notify', data);
     });
-
-    socket.on('isTake', function(data){
-        if(board[data.col + data.row] != null && board[data.col + data.row] != data.piece){
-            data.take = board[data.col + data.row];
-            io.emit('takeResult', data);
-        }
-    });
-
+    
     socket.on('disconnect', function(){
         console.log('user disconnected');
     });
 });
+
+function log(data) {
+    if(data == undefined)
+        return "undefined";
+    var string = "";
+    if(data[0] == 'w'){
+        string += "white ";
+    } else {
+        string += "black ";
+    }
+
+    switch(data[1]){
+        case 'p':
+            string += "pawn "; break;
+        case 'r':
+            string += "rook "; break;
+        case 'n':
+            string += "knigth "; break;
+        case 'b':
+            string += "bishop "; break;
+        case 'q':
+            string += "queen "; break;
+        case 'k':
+            string += "king "; break;
+    }
+    string += data[2];
+    return string;
+}
 
 http.listen(3000, function(){
     console.log('listening on *:3000');

@@ -1,375 +1,387 @@
 body {
-  font-family: 'Mukta Mahee', sans-serif;;
+    font-family: 'Mukta Mahee', sans-serif;;
 }
 
 #drag-1, #drag-2 {
-  width: 25%;
-  height: 100%;
-  min-height: 6.5em;
-  margin: 10%;
+    width: 25%;
+    height: 100%;
+    min-height: 6.5em;
+    margin: 10%;
 
-  background-color: #29e;
-  color: white;
+    background-color: #29e;
+    color: white;
 
-  border-radius: 0.75em;
-  padding: 4%;
+    border-radius: 0.75em;
+    padding: 4%;
 
-  -webkit-transform: translate(0px, 0px);
-          transform: translate(0px, 0px);
+    -webkit-transform: translate(0px, 0px);
+    transform: translate(0px, 0px);
 }
 
 #drag-me::before {
-  content: "#" attr(id);
-  font-weight: bold;
+    content: "#" attr(id);
+    font-weight: bold;
 }
 
 #board {
-  display: inline-block; 
-  background-image: url("/img/_board.png");
-  width: 360px; 
-  height: 360px;
+    display: inline-block;
+    background-image: url("/img/_board.png");
+    width: 360px;
+    height: 360px;
 }
 
 #bk {
-  background-image: url("/img/bk.png");
-  z-index: 5;
-  width: 45px; 
-  height: 45px;
-  position: relative;
-  float: left;
-  left: 0px;
-  top: 0px;
-  /*visibility: hidden;*/
+    background-image: url("/img/bk.png");
+    z-index: 5;
+    width: 45px;
+    height: 45px;
+    position: relative;
+    float: left;
+    left: 0px;
+    top: 0px;
+    /*visibility: hidden;*/
 }
 
 #bq {
-  background-image: url("/img/bq.png");
-  z-index: 5;
-  width: 45px; 
-  height: 45px;
-  position: relative;
-  float: left;
-  left: 0px;
-  top: 0px;
+    background-image: url("/img/bq.png");
+    z-index: 5;
+    width: 45px;
+    height: 45px;
+    position: relative;
+    float: left;
+    left: 0px;
+    top: 0px;
 }
 
 #br1 {
-  background-image: url("/img/br.png");
-  z-index: 5;
-  width: 45px; 
-  height: 45px;
-  position: relative;
-  float: left;
-  left: 0px;
-  top: 0px;
+    background-image: url("/img/br.png");
+    z-index: 5;
+    width: 45px;
+    height: 45px;
+    position: relative;
+    float: left;
+    left: 0px;
+    top: 0px;
 }
 
-
 #br2 {
-  background-image: url("/img/br.png");
-  z-index: 5;
-  width: 45px; 
-  height: 45px;
-  position: relative;
-  float: left;
-  left: 0px;
-  top: 0px;
+    background-image: url("/img/br.png");
+    z-index: 5;
+    width: 45px;
+    height: 45px;
+    position: relative;
+    float: left;
+    left: 0px;
+    top: 0px;
 }
 
 #bn1 {
-  background-image: url("/img/bn.png");
-  z-index: 5;
-  width: 45px; 
-  height: 45px;
-  position: relative;
-  float: left;
-  left: 0px;
-  top: 0px;
+    background-image: url("/img/bn.png");
+    z-index: 5;
+    width: 45px;
+    height: 45px;
+    position: relative;
+    float: left;
+    left: 0px;
+    top: 0px;
 }
 
 #bn2 {
-  background-image: url("/img/bn.png");
-  z-index: 5;
-  width: 45px; 
-  height: 45px;
-  position: relative;
-  float: left;
-  left: 0px;
-  top: 0px;
+    background-image: url("/img/bn.png");
+    z-index: 5;
+    width: 45px;
+    height: 45px;
+    position: relative;
+    float: left;
+    left: 0px;
+    top: 0px;
 }
 
 #bb1 {
-  background-image: url("/img/bb.png");
-  z-index: 5;
-  width: 45px; 
-  height: 45px;
-  position: relative;
-  float: left;
-  left: 0px;
-  top: 0px;
+    background-image: url("/img/bb.png");
+    z-index: 5;
+    width: 45px;
+    height: 45px;
+    position: relative;
+    float: left;
+    left: 0px;
+    top: 0px;
 }
 
 #bb2 {
-  background-image: url("/img/bb.png");
-  z-index: 5;
-  width: 45px; 
-  height: 45px;
-  position: relative;
-  float: left;
-  left: 0px;
-  top: 0px;
+    background-image: url("/img/bb.png");
+    z-index: 5;
+    width: 45px;
+    height: 45px;
+    position: relative;
+    float: left;
+    left: 0px;
+    top: 0px;
 }
 
 #bp1 {
-  background-image: url("/img/bp.png");
-  z-index: 5;
-  width: 45px;
-  height: 45px;
-  position: relative;
-  float: left;
-  left: 0px;
-  top: 0px;
-}
-#bp2 {
-  background-image: url("/img/bp.png");
-  z-index: 5;
-  width: 45px;
-  height: 45px;
-  position: relative;
-  float: left;
-  left: 0px;
-  top: 0px;
-}
-#bp3 {
-  background-image: url("/img/bp.png");
-  z-index: 5;
-  width: 45px;
-  height: 45px;
-  position: relative;
-  float: left;
-  left: 0px;
-  top: 0px;
-}
-#bp4 {
-  background-image: url("/img/bp.png");
-  z-index: 5;
-  width: 45px;
-  height: 45px;
-  position: relative;
-  float: left;
-  left: 0px;
-  top: 0px;
-}
-#bp5 {
-  background-image: url("/img/bp.png");
-  z-index: 5;
-  width: 45px;
-  height: 45px;
-  position: relative;
-  float: left;
-  left: 0px;
-  top: 0px;
-}#bp6 {
-   background-image: url("/img/bp.png");
-   z-index: 5;
-   width: 45px;
-   height: 45px;
-   position: relative;
-   float: left;
-   left: 0px;
-   top: 0px;
- }
-#bp7 {
-  background-image: url("/img/bp.png");
-  z-index: 5;
-  width: 45px;
-  height: 45px;
-  position: relative;
-  float: left;
-  left: 0px;
-  top: 0px;
-}
-#bp8 {
-  background-image: url("/img/bp.png");
-  z-index: 5;
-  width: 45px;
-  height: 45px;
-  position: relative;
-  float: left;
-  left: 0px;
-  top: 0px;
+    background-image: url("/img/bp.png");
+    z-index: 5;
+    width: 45px;
+    height: 45px;
+    position: relative;
+    float: left;
+    left: 0px;
+    top: 0px;
 }
 
+#bp2 {
+    background-image: url("/img/bp.png");
+    z-index: 5;
+    width: 45px;
+    height: 45px;
+    position: relative;
+    float: left;
+    left: 0px;
+    top: 0px;
+}
+
+#bp3 {
+    background-image: url("/img/bp.png");
+    z-index: 5;
+    width: 45px;
+    height: 45px;
+    position: relative;
+    float: left;
+    left: 0px;
+    top: 0px;
+}
+
+#bp4 {
+    background-image: url("/img/bp.png");
+    z-index: 5;
+    width: 45px;
+    height: 45px;
+    position: relative;
+    float: left;
+    left: 0px;
+    top: 0px;
+}
+
+#bp5 {
+    background-image: url("/img/bp.png");
+    z-index: 5;
+    width: 45px;
+    height: 45px;
+    position: relative;
+    float: left;
+    left: 0px;
+    top: 0px;
+}
+
+#bp6 {
+    background-image: url("/img/bp.png");
+    z-index: 5;
+    width: 45px;
+    height: 45px;
+    position: relative;
+    float: left;
+    left: 0px;
+    top: 0px;
+}
+
+#bp7 {
+    background-image: url("/img/bp.png");
+    z-index: 5;
+    width: 45px;
+    height: 45px;
+    position: relative;
+    float: left;
+    left: 0px;
+    top: 0px;
+}
+
+#bp8 {
+    background-image: url("/img/bp.png");
+    z-index: 5;
+    width: 45px;
+    height: 45px;
+    position: relative;
+    float: left;
+    left: 0px;
+    top: 0px;
+}
 
 #wk {
-  background-image: url("/img/wk.png");
-  z-index: 5;
-  width: 45px;
-  height: 45px;
-  position: relative;
-  float: left;
-  left: 0px;
-  top: 180px;
-  /*visibility: hidden;*/
+    background-image: url("/img/wk.png");
+    z-index: 5;
+    width: 45px;
+    height: 45px;
+    position: relative;
+    float: left;
+    left: 0px;
+    top: 180px;
+    /*visibility: hidden;*/
 }
 
 #wq {
-  background-image: url("/img/wq.png");
-  z-index: 5;
-  width: 45px;
-  height: 45px;
-  position: relative;
-  float: left;
-  left: 0px;
-  top: 180px;
+    background-image: url("/img/wq.png");
+    z-index: 5;
+    width: 45px;
+    height: 45px;
+    position: relative;
+    float: left;
+    left: 0px;
+    top: 180px;
 }
 
 #wr1 {
-  background-image: url("/img/wr.png");
-  z-index: 5;
-  width: 45px;
-  height: 45px;
-  position: relative;
-  float: left;
-  left: 0px;
-  top: 180px;
+    background-image: url("/img/wr.png");
+    z-index: 5;
+    width: 45px;
+    height: 45px;
+    position: relative;
+    float: left;
+    left: 0px;
+    top: 180px;
 }
 
-
 #wr2 {
-  background-image: url("/img/wr.png");
-  z-index: 5;
-  width: 45px;
-  height: 45px;
-  position: relative;
-  float: left;
-  left: 0px;
-  top: 180px;
+    background-image: url("/img/wr.png");
+    z-index: 5;
+    width: 45px;
+    height: 45px;
+    position: relative;
+    float: left;
+    left: 0px;
+    top: 180px;
 }
 
 #wn1 {
-  background-image: url("/img/wn.png");
-  z-index: 5;
-  width: 45px;
-  height: 45px;
-  position: relative;
-  float: left;
-  left: 0px;
-  top: 180px;
+    background-image: url("/img/wn.png");
+    z-index: 5;
+    width: 45px;
+    height: 45px;
+    position: relative;
+    float: left;
+    left: 0px;
+    top: 180px;
 }
 
 #wn2 {
-  background-image: url("/img/wn.png");
-  z-index: 5;
-  width: 45px;
-  height: 45px;
-  position: relative;
-  float: left;
-  left: 0px;
-  top: 180px;
+    background-image: url("/img/wn.png");
+    z-index: 5;
+    width: 45px;
+    height: 45px;
+    position: relative;
+    float: left;
+    left: 0px;
+    top: 180px;
 }
 
 #wb1 {
-  background-image: url("/img/wb.png");
-  z-index: 5;
-  width: 45px;
-  height: 45px;
-  position: relative;
-  float: left;
-  left: 0px;
-  top: 180px;
+    background-image: url("/img/wb.png");
+    z-index: 5;
+    width: 45px;
+    height: 45px;
+    position: relative;
+    float: left;
+    left: 0px;
+    top: 180px;
 }
 
 #wb2 {
-  background-image: url("/img/wb.png");
-  z-index: 5;
-  width: 45px;
-  height: 45px;
-  position: relative;
-  float: left;
-  left: 0px;
-  top: 180px;
+    background-image: url("/img/wb.png");
+    z-index: 5;
+    width: 45px;
+    height: 45px;
+    position: relative;
+    float: left;
+    left: 0px;
+    top: 180px;
 }
 
 #wp1 {
-  background-image: url("/img/wp.png");
-  z-index: 5;
-  width: 45px;
-  height: 45px;
-  position: relative;
-  float: left;
-  left: 0px;
-  top: 180px;
+    background-image: url("/img/wp.png");
+    z-index: 5;
+    width: 45px;
+    height: 45px;
+    position: relative;
+    float: left;
+    left: 0px;
+    top: 180px;
 }
+
 #wp2 {
-  background-image: url("/img/wp.png");
-  z-index: 5;
-  width: 45px;
-  height: 45px;
-  position: relative;
-  float: left;
-  left: 0px;
-  top: 180px;
+    background-image: url("/img/wp.png");
+    z-index: 5;
+    width: 45px;
+    height: 45px;
+    position: relative;
+    float: left;
+    left: 0px;
+    top: 180px;
 }
+
 #wp3 {
-  background-image: url("/img/wp.png");
-  z-index: 5;
-  width: 45px;
-  height: 45px;
-  position: relative;
-  float: left;
-  left: 0px;
-  top: 180px;
+    background-image: url("/img/wp.png");
+    z-index: 5;
+    width: 45px;
+    height: 45px;
+    position: relative;
+    float: left;
+    left: 0px;
+    top: 180px;
 }
+
 #wp4 {
-  background-image: url("/img/wp.png");
-  z-index: 5;
-  width: 45px;
-  height: 45px;
-  position: relative;
-  float: left;
-  left: 0px;
-  top: 180px;
+    background-image: url("/img/wp.png");
+    z-index: 5;
+    width: 45px;
+    height: 45px;
+    position: relative;
+    float: left;
+    left: 0px;
+    top: 180px;
 }
+
 #wp5 {
-  background-image: url("/img/wp.png");
-  z-index: 5;
-  width: 45px;
-  height: 45px;
-  position: relative;
-  float: left;
-  left: 0px;
-  top: 180px;
+    background-image: url("/img/wp.png");
+    z-index: 5;
+    width: 45px;
+    height: 45px;
+    position: relative;
+    float: left;
+    left: 0px;
+    top: 180px;
 }
+
 #wp6 {
-   background-image: url("/img/wp.png");
-   z-index: 5;
-   width: 45px;
-   height: 45px;
-   position: relative;
-   float: left;
-   left: 0px;
-  top: 180px;
- }
-#wp7 {
-  background-image: url("/img/wp.png");
-  z-index: 5;
-  width: 45px;
-  height: 45px;
-  position: relative;
-  float: left;
-  left: 0px;
-  top: 180px;
+    background-image: url("/img/wp.png");
+    z-index: 5;
+    width: 45px;
+    height: 45px;
+    position: relative;
+    float: left;
+    left: 0px;
+    top: 180px;
 }
+
+#wp7 {
+    background-image: url("/img/wp.png");
+    z-index: 5;
+    width: 45px;
+    height: 45px;
+    position: relative;
+    float: left;
+    left: 0px;
+    top: 180px;
+}
+
 #wp8 {
-  background-image: url("/img/wp.png");
-  z-index: 5;
-  width: 45px;
-  height: 45px;
-  position: relative;
-  float: left;
-  left: 0px;
-  top: 180px;
+    background-image: url("/img/wp.png");
+    z-index: 5;
+    width: 45px;
+    height: 45px;
+    position: relative;
+    float: left;
+    left: 0px;
+    top: 180px;
 }
 
 
