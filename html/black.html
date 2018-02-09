@@ -3,8 +3,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script type="text/javascript" src="/node_modules/socket.io-client/dist/socket.io.js"></script>
     <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
-    <script type="text/javascript" src="js/interact.min.js"></script>
-    <script type="text/javascript" src="js/drag.js"></script>
+    <script type="text/javascript" src="../js/interact.min.js"></script>
+    <script type="text/javascript" src="../js/drag.js"></script>
     <script>
         var socket;
         $(function () {
@@ -13,6 +13,7 @@
                 console.log("[" + data.oldCol + ", " + data.oldRow + "]");
                 console.log("[" + data.col + ", " + data.row + "]");
 
+                var string = "to";
                 var elem = document.getElementById(data.piece);
                 // update the position attributes
                 if (data.piece[0] == 'w')
@@ -32,7 +33,7 @@
             socket.emit(msg, data);
         }
     </script>
-    <link href="style/styleBlack.css" rel="stylesheet" type="text/css" media="all">
+    <link href="../style/styleBlack.css" rel="stylesheet" type="text/css" media="all">
 </head>
 <body>
 <div style="text-align: center">
