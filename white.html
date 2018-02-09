@@ -1,0 +1,83 @@
+<head>
+    <link href="https://fonts.googleapis.com/css?family=Mukta+Mahee" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script type="text/javascript" src="/node_modules/socket.io-client/dist/socket.io.js"></script>
+	<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+	<script type="text/javascript" src="js/interact.min.js"></script>
+	<script type="text/javascript" src="js/drag.js"></script>
+	<script>
+		var socket;
+		$(function () {
+			socket = io();
+			socket.on("notify", function(data){
+                console.log("[" + data.col + ", " + data.row + "]");
+
+				var id = data.piece, x = data.posX, y = data.posY;
+				var elem = document.getElementById(id);
+
+				// update the position attributes
+                elem.setAttribute("style", "left: " + x + "px; top: " + y + "px;");
+				//elem.setAttribute('data-y', y);
+			});
+
+            socket.on("takeResult", function (data) {
+                if(data.take != null){
+                    document.getElementById(data.take).setAttribute("style", "visibility: hidden");
+                }
+            });
+		});
+        function sendWithSocket(msg, data){
+            socket.emit(msg, data);
+        }
+	</script>
+    <script>
+        $(function () {
+            document.getElementById('url').innerHTML = window.location.href.split("c=")[0]+"c=b";
+        });
+    </script>
+	<link href="style/styleWhite.css" rel="stylesheet" type="text/css" media="all">
+</head>
+<body>
+	<div style="text-align: center">
+            <h1>Play!</h1>
+            <div id="board">
+                <div id="br2" col="A" row="8"></div>
+                <div id="bn2" col="B" row="8"></div>
+                <div id="bb2" col="C" row="8"></div>
+                <div id="bq" col="D" row="8"></div>
+                <div id="bk" col="E" row="8"></div>
+                <div id="bb1" col="F" row="8"></div>
+                <div id="bn1" col="G" row="8"></div>
+                <div id="br1" col="H" row="8"></div>
+
+                <div id="bp8" col="A" row="7"></div>
+                <div id="bp7" col="B" row="7"></div>
+                <div id="bp6" col="C" row="7"></div>
+                <div id="bp5" col="D" row="7"></div>
+                <div id="bp4" col="E" row="7"></div>
+                <div id="bp3" col="F" row="7"></div>
+                <div id="bp2" col="G" row="7"></div>
+                <div id="bp1" col="H" row="7"></div>
+
+
+                <div id="wp1" class="draggable" col="A" row="2"></div>
+                <div id="wp2" class="draggable" col="B" row="2"></div>
+                <div id="wp3" class="draggable" col="C" row="2"></div>
+                <div id="wp4" class="draggable" col="D" row="2"></div>
+                <div id="wp5" class="draggable" col="E" row="2"></div>
+                <div id="wp6" class="draggable" col="F" row="2"></div>
+                <div id="wp7" class="draggable" col="G" row="2"></div>
+                <div id="wp8" class="draggable" col="H" row="2"></div>
+
+                <div id="wr1" class="draggable" col="A" row="1"></div>
+                <div id="wn1" class="draggable" col="B" row="1"></div>
+                <div id="wb1" class="draggable" col="C" row="1"></div>
+                <div id="wq" class="draggable" col="D" row="1"></div>
+                <div id="wk" class="draggable" col="E" row="1"></div>
+                <div id="wb2" class="draggable" col="F" row="1"></div>
+                <div id="wn2" class="draggable" col="G" row="1"></div>
+                <div id="wr2" class="draggable" col="H" row="1"></div>
+            </div>
+            <h5 id="url"></h5>
+	</div>
+</body>
