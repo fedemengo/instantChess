@@ -11,7 +11,7 @@
 
 - [x] At least should work
 - [ ] Traditional moves listing
-- [ ] Check for allowed moves
+- [ ] Check for allowed moves
 - [ ] General refactoring
 - [ ] Respectable GUI
 - [ ] Multiple games
