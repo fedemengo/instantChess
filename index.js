@@ -25,7 +25,7 @@ var board = {
 var current_board = {};
 
 app.get('/', function(req, res){
-	res.redirect('/play?id=' + sha1(req) + '&c=w');
+	res.redirect('/play?id=' + String(sha1(req)).substring(0, 15) + '&c=w');
 });
 
 app.get('/play', function (req, res) {
