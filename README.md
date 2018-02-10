@@ -16,8 +16,10 @@
 - [x] Traditional moves listing
 - [x] General refactoring
 - [x] One move per turn
+- [x] Take back a move (replace piece to its square)
 - [ ] Check for allowed moves
-- [ ] Respectable GUI
+- [x] Respectable GUI
+- [ ] Super amazing GUI
 - [ ] Multiple games
 - [ ] Resume game
 - [ ] ....
