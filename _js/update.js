@@ -7,15 +7,12 @@ $(function () {
         console.log("[" + data.piece[1].toUpperCase() + data.oldCol.toLowerCase() + data.oldRow + "]");
         console.log("[" + data.col.toLowerCase() + data.row + "]");
 
-        var take = "";
-        var elem = document.getElementById(data.piece);
-        // update the position attributes
-        if(data.piece[0] == 'w'){
-            $("#move").text("Black move");
-        } else {
-            $("#move").text("White move");
-        }
+        var take = "", elem = document.getElementById(data.piece);
 
+		// update the position attributes
+        data.piece[0] == 'w' ? $("#move").text("Black move") : $("#move").text("White move");
+
+		// if the move is from other player then update  board
         if (data.piece[0] != color){
             elem.setAttribute("style", "left: " + data.posX + "px; top: " + data.posY + "px;");
             Array.from(document.getElementsByClassName("disabled")).forEach(function (entry) {

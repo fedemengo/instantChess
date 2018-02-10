@@ -20,6 +20,7 @@ interact('.draggable')
 
 		// call this function on every dragend event
 		onend: function (event) {
+			flag = 0;	
 			var target = event.target,
 				x = Math.round((parseFloat(target.getAttribute('data-x')))/45)*45,
 				y = Math.round((parseFloat(target.getAttribute('data-y')))/45)*45;
@@ -29,7 +30,6 @@ interact('.draggable')
 			target.setAttribute('data-y', y);
 
 			var data = position(target, parseInt(Math.round(x/45)), parseInt(Math.round(y/45)));
-			flag = 0;
 
 			if(!(data.x == oldData.x && data.y == oldData.y)){
 				sendWithSocket("move", {
@@ -51,17 +51,16 @@ interact('.draggable')
 	});
 
 	function dragMoveListener (event) {
-		var target = event.target;
-
 		// keep the dragged position in the data-x/data-y attributes
-		var x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx,
+		var target = event.target,
+			x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx,
 			y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
 
 		if(!flag){
 			flag = 1;
 			oldData = position(target,
-				parseInt(Math.round((Math.round(x/45)*45)/45)),
-				parseInt(Math.round((Math.round(y/45)*45)/45))
+				parseInt(Math.round(x/45)),
+				parseInt(Math.round(y/45))
 			);
 		}
 
@@ -76,10 +75,7 @@ interact('.draggable')
 window.dragMoveListener = dragMoveListener;
 
 function position(target, colSkip, rowSkip){
-	if(window.location.search.split("c=")[1] == 'b')
-		colSkip = -colSkip; // WHITE BOARD
-	else
-		rowSkip = -rowSkip; // BLACK BOARD
+	window.location.search.split("c=")[1] == 'b' ? colSkip = -colSkip : rowSkip = -rowSkip;
 	return {
 		x: parseInt(target.getAttribute('row'))+rowSkip,
 		y: String.fromCharCode(target.getAttribute('col').charCodeAt(0)+colSkip)
