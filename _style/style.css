@@ -1,22 +1,6 @@
 body { font-family: 'Mukta Mahee', sans-serif; }
-
-#drag-1, #drag-2 {
-    width: 25%;
-    height: 100%;
-    min-height: 6.5em;
-    margin: 10%;
-    background-color: #29e;
-    color: white;
-    border-radius: 0.75em;
-    padding: 4%;
-    -webkit-transform: translate(0px, 0px);
-    transform: translate(0px, 0px);
-}
-
-#drag-me::before {
-    content: "#" attr(id);
-    font-weight: bold;
-}
+h1 { margin: 0 0; }
+h3 { margin: 10px 5px; }
 
 #board {
     display: inline-block;
@@ -66,4 +50,20 @@ body { font-family: 'Mukta Mahee', sans-serif; }
     float: left;
     left: 0px;
     top: 180px;
+}
+
+.moves {
+    border-radius: 10px;
+    float: right;
+    background-color: #e9e9e9;
+    width: 200px;
+    height: 500px;
+    overflow-y: scroll;
+}
+
+.main-div {
+    margin:0 auto;
+    text-align: center;
+    width: 600px;
+    height: 600px
 }
