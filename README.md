@@ -12,10 +12,10 @@
 
 ### TODO
 
-- [x] At least should work (09-02)
-- [x] Traditional moves listing (10-02)
+- [x] At least should work
+- [x] Traditional moves listing
+- [x] General refactoring
 - [ ] Check for allowed moves
-- [ ] General refactoring
 - [ ] Respectable GUI
 - [ ] Multiple games
 - [ ] Resume game
