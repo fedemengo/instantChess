@@ -9,8 +9,8 @@
 
 ### TODO
 
-- [x] At least should work
-- [ ] Traditional moves listing
+- [x] At least should work (09-02)
+- [x] Traditional moves listing (10-02)
 - [ ] Check for allowed moves
 - [ ] General refactoring
 - [ ] Respectable GUI
