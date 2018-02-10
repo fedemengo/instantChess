@@ -28,7 +28,7 @@ interact('.draggable')
 			target.setAttribute('data-x', x);
 			target.setAttribute('data-y', y);
 
-			var data = position(target, parseInt(Math.round(y/45)), parseInt(Math.round(x/45)));
+			var data = position(target, parseInt(Math.round(x/45)), parseInt(Math.round(y/45)));
 			flag = 0;
 
 			sendWithSocket("move", {
@@ -69,12 +69,12 @@ interact('.draggable')
 window.dragMoveListener = dragMoveListener;
 
 function position(target, colSkip, rowSkip){
-	if(window.location.search.split("c=")[1] == 'w')
+	if(window.location.search.split("c=")[1] == 'b')
 		colSkip = -colSkip; // WHITE BOARD
 	else
 		rowSkip = -rowSkip; // BLACK BOARD
 	return {
-		x: parseInt(target.getAttribute('row'))+colSkip,
-		y: String.fromCharCode(target.getAttribute('col').charCodeAt(0)+rowSkip)
+		x: parseInt(target.getAttribute('row'))+rowSkip,
+		y: String.fromCharCode(target.getAttribute('col').charCodeAt(0)+colSkip)
 	};
 }

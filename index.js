@@ -49,7 +49,7 @@ var board = {
 var current_board = {};
 
 app.get('/', function(req, res){
-    res.redirect('/play?id=' + sha1(req) + '&c=w');
+	res.redirect('/play?id=' + sha1(req) + '&c=w');
 });
 
 app.get('/play', function (req, res) {
@@ -62,7 +62,7 @@ app.get('/play', function (req, res) {
 });
 
 io.on('connection', function(socket){
-
+	console.log("New connection:\t\t" + socket.id);
     socket.on('move', function(data){
         console.log("socket: move");
         console.log(log(data.piece) + ": [" + data.col + ", " + data.row + "]\n");
@@ -83,7 +83,7 @@ io.on('connection', function(socket){
     });
     
     socket.on('disconnect', function(){
-        console.log('user disconnected');
+        console.log("Disconnected:\t\t" + socket.id);
     });
 });
 
@@ -116,5 +116,5 @@ function log(data) {
 }
 
 http.listen(3000, function(){
-    console.log('listening on *:3000');
+    console.log('listening on localhost:3000');
 });
