@@ -4,8 +4,8 @@ $(function () {
     socket = io();
     socket.on("notify", function (data) {
 
-        console.log("[" + data.piece[1].toUpperCase() + data.oldCol.toLowerCase() + ", " + data.oldRow + "]");
-        console.log("[" + data.col.toLowerCase() + ", " + data.row + "]");
+        console.log("[" + data.piece[1].toUpperCase() + data.oldCol.toLowerCase() + data.oldRow + "]");
+        console.log("[" + data.col.toLowerCase() + data.row + "]");
 
         var take = "";
         var elem = document.getElementById(data.piece);

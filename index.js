@@ -4,10 +4,10 @@ var io = require('socket.io')(http);
 var express = require('express');
 var sha1 = require('sha1');
 
-app.use("/img", express.static(__dirname + '/img'));
-app.use("/html", express.static(__dirname + '/html'));
-app.use("/js", express.static(__dirname + '/js'));
-app.use("/style", express.static(__dirname + '/style'));
+app.use("/_img", express.static(__dirname + '/_img'));
+app.use("/_html", express.static(__dirname + '/_html'));
+app.use("/_js", express.static(__dirname + '/_js'));
+app.use("/_style", express.static(__dirname + '/_style'));
 app.use("/node_modules/socket.io-client/dist/", express.static(__dirname + '/node_modules/socket.io-client/dist/'));
 
 var board = {
@@ -31,9 +31,9 @@ app.get('/', function(req, res){
 app.get('/play', function (req, res) {
     if(req.query.c == 'w'){
         current_board = board;
-        res.sendFile(__dirname + '/html/white.html');
+        res.sendFile(__dirname + '/_html/white.html');
     } else {
-        res.sendFile(__dirname + '/html/black.html');
+        res.sendFile(__dirname + '/_html/black.html');
     }
 });
 
