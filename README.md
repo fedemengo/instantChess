@@ -15,6 +15,7 @@
 - [x] At least should work
 - [x] Traditional moves listing
 - [x] General refactoring
+- [x] One move per turn
 - [ ] Check for allowed moves
 - [ ] Respectable GUI
 - [ ] Multiple games
