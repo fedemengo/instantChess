@@ -14,9 +14,10 @@
     </script>
 </head>
 <body>
-    <div style="text-align: center; height: 500px">
-        <div style="float: left; width: 500px">
+    <div class="main-div">
+        <div style="text-align: center; float: left; width: 400px;">
             <h1>Play!</h1>
+            <h3>White player</h3>
             <div id="board">
                 <div id="br2" class="row8" col="A" row="8"></div>
                 <div id="bn2" class="row8" col="B" row="8"></div>
@@ -55,10 +56,11 @@
                 <div id="wn2" class="draggable row1" col="G" row="1"></div>
                 <div id="wr2" class="draggable row1" col="H" row="1"></div>
             </div>
+            <h5 id="url"></h5>
         </div>
-        <div style="float: left; background-color: #e9e9e9; width: 200px; height: 500px; overflow-y: scroll">
+        <div class="moves">
+            <h3 id="move">White move</h3>
             <ol id="list"></ol>
         </div>
     </div>
-    <h5 id="url"></h5>
 </body>
