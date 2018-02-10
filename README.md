@@ -6,6 +6,9 @@
 * `cd instantChess`
 * `npm install`
 * `node index`
+* white player open `localhost:3000/`
+* url for black player is displayed
+* black player open url
 
 ### TODO
 
