@@ -11,39 +11,15 @@ app.use("/style", express.static(__dirname + '/style'));
 app.use("/node_modules/socket.io-client/dist/", express.static(__dirname + '/node_modules/socket.io-client/dist/'));
 
 var board = {
-    "A1": "wr1",
-    "B1": "wn1",
-    "C1": "wb1",
-    "D1": "wq",
-    "E1": "wk",
-    "F1": "wb2",
-    "G1": "wn2",
-    "H1": "wr2",
-    "A2": "wp1",
-    "B2": "wp2",
-    "C2": "wp3",
-    "D2": "wp4",
-    "E2": "wp5",
-    "F2": "wp6",
-    "G2": "wp7",
-    "H2": "wp8",
+    "A1": "wr1", "B1": "wn1", "C1": "wb1", "D1": "wq",
+    "E1": "wk", "F1": "wb2", "G1": "wn2", "H1": "wr2",
+    "A2": "wp1", "B2": "wp2", "C2": "wp3", "D2": "wp4",
+    "E2": "wp5", "F2": "wp6", "G2": "wp7", "H2": "wp8",
 
-    "A8": "br2",
-    "B8": "bn2",
-    "C8": "bb2",
-    "D8": "bq",
-    "E8": "bk",
-    "F8": "bb1",
-    "G8": "bn1",
-    "H8": "br1",
-    "A7": "bp8",
-    "B7": "bp7",
-    "C7": "bp6",
-    "D7": "bp5",
-    "E7": "bp4",
-    "F7": "bp3",
-    "G7": "bp2",
-    "H7": "bp1"
+    "A8": "br2", "B8": "bn2", "C8": "bb2", "D8": "bq",
+    "E8": "bk", "F8": "bb1", "G8": "bn1", "H8": "br1",
+    "A7": "bp8", "B7": "bp7", "C7": "bp6", "D7": "bp5",
+    "E7": "bp4", "F7": "bp3", "G7": "bp2", "H7": "bp1"
 };
 
 var current_board = {};
@@ -96,20 +72,13 @@ function log(data) {
     } else {
         string += "black ";
     }
-
     switch(data[1]){
-        case 'p':
-            string += "pawn "; break;
-        case 'r':
-            string += "rook "; break;
-        case 'n':
-            string += "knigth "; break;
-        case 'b':
-            string += "bishop "; break;
-        case 'q':
-            string += "queen "; break;
-        case 'k':
-            string += "king "; break;
+        case 'p': string += "pawn "; break;
+        case 'r': string += "rook "; break;
+        case 'n': string += "knigth "; break;
+        case 'b': string += "bishop "; break;
+        case 'q': string += "queen "; break;
+        case 'k': string += "king "; break;
     }
     string += data[2];
     return string;

@@ -1,6 +1,6 @@
 <head>
     <link href="https://fonts.googleapis.com/css?family=Mukta+Mahee" rel="stylesheet">
-    <link href="../style/styleWhite.css" rel="stylesheet" type="text/css" media="all">
+    <link href="../style/style.css" rel="stylesheet" type="text/css" media="all">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script type="text/javascript" src="/node_modules/socket.io-client/dist/socket.io.js"></script>
     <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
@@ -18,42 +18,42 @@
     <div style="float: left; width: 500px">
         <h1>Play!</h1>
             <div id="board">
-                <div id="br2" col="A" row="8"></div>
-                <div id="bn2" col="B" row="8"></div>
-                <div id="bb2" col="C" row="8"></div>
-                <div id="bq" col="D" row="8"></div>
-                <div id="bk" col="E" row="8"></div>
-                <div id="bb1" col="F" row="8"></div>
-                <div id="bn1" col="G" row="8"></div>
-                <div id="br1" col="H" row="8"></div>
+                <div id="br2" class="row8" col="A" row="8"></div>
+                <div id="bn2" class="row8" col="B" row="8"></div>
+                <div id="bb2" class="row8" col="C" row="8"></div>
+                <div id="bq" class="row8" col="D" row="8"></div>
+                <div id="bk" class="row8" col="E" row="8"></div>
+                <div id="bb1" class="row8" col="F" row="8"></div>
+                <div id="bn1" class="row8" col="G" row="8"></div>
+                <div id="br1" class="row8" col="H" row="8"></div>
 
-                <div id="bp8" col="A" row="7"></div>
-                <div id="bp7" col="B" row="7"></div>
-                <div id="bp6" col="C" row="7"></div>
-                <div id="bp5" col="D" row="7"></div>
-                <div id="bp4" col="E" row="7"></div>
-                <div id="bp3" col="F" row="7"></div>
-                <div id="bp2" col="G" row="7"></div>
-                <div id="bp1" col="H" row="7"></div>
+                <div id="bp8" class="row7" col="A" row="7"></div>
+                <div id="bp7" class="row7" col="B" row="7"></div>
+                <div id="bp6" class="row7" col="C" row="7"></div>
+                <div id="bp5" class="row7" col="D" row="7"></div>
+                <div id="bp4" class="row7" col="E" row="7"></div>
+                <div id="bp3" class="row7" col="F" row="7"></div>
+                <div id="bp2" class="row7" col="G" row="7"></div>
+                <div id="bp1" class="row7" col="H" row="7"></div>
 
 
-                <div id="wp1" class="draggable" col="A" row="2"></div>
-                <div id="wp2" class="draggable" col="B" row="2"></div>
-                <div id="wp3" class="draggable" col="C" row="2"></div>
-                <div id="wp4" class="draggable" col="D" row="2"></div>
-                <div id="wp5" class="draggable" col="E" row="2"></div>
-                <div id="wp6" class="draggable" col="F" row="2"></div>
-                <div id="wp7" class="draggable" col="G" row="2"></div>
-                <div id="wp8" class="draggable" col="H" row="2"></div>
+                <div id="wp1" class="draggable row2" col="A" row="2"></div>
+                <div id="wp2" class="draggable row2" col="B" row="2"></div>
+                <div id="wp3" class="draggable row2" col="C" row="2"></div>
+                <div id="wp4" class="draggable row2" col="D" row="2"></div>
+                <div id="wp5" class="draggable row2" col="E" row="2"></div>
+                <div id="wp6" class="draggable row2" col="F" row="2"></div>
+                <div id="wp7" class="draggable row2" col="G" row="2"></div>
+                <div id="wp8" class="draggable row2" col="H" row="2"></div>
 
-                <div id="wr1" class="draggable" col="A" row="1"></div>
-                <div id="wn1" class="draggable" col="B" row="1"></div>
-                <div id="wb1" class="draggable" col="C" row="1"></div>
-                <div id="wq" class="draggable" col="D" row="1"></div>
-                <div id="wk" class="draggable" col="E" row="1"></div>
-                <div id="wb2" class="draggable" col="F" row="1"></div>
-                <div id="wn2" class="draggable" col="G" row="1"></div>
-                <div id="wr2" class="draggable" col="H" row="1"></div>
+                <div id="wr1" class="draggable row1" col="A" row="1"></div>
+                <div id="wn1" class="draggable row1" col="B" row="1"></div>
+                <div id="wb1" class="draggable row1" col="C" row="1"></div>
+                <div id="wq" class="draggable row1" col="D" row="1"></div>
+                <div id="wk" class="draggable row1" col="E" row="1"></div>
+                <div id="wb2" class="draggable row1" col="F" row="1"></div>
+                <div id="wn2" class="draggable row1" col="G" row="1"></div>
+                <div id="wr2" class="draggable row1" col="H" row="1"></div>
             </div>
     </div>
     <div style="float: left; background-color: #e9e9e9; width: 200px; height: 500px; overflow-y: scroll">

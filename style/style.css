@@ -1,0 +1,79 @@
+body { font-family: 'Mukta Mahee', sans-serif; }
+
+#drag-1, #drag-2 {
+    width: 25%;
+    height: 100%;
+    min-height: 6.5em;
+    margin: 10%;
+    background-color: #29e;
+    color: white;
+    border-radius: 0.75em;
+    padding: 4%;
+    -webkit-transform: translate(0px, 0px);
+    transform: translate(0px, 0px);
+}
+
+#drag-me::before {
+    content: "#" attr(id);
+    font-weight: bold;
+}
+
+#board {
+    display: inline-block;
+    background-image: url("/img/_board.png");
+    width: 360px;
+    height: 360px;
+}
+
+#bk { background-image: url("/img/bk.png"); }
+#bq { background-image: url("/img/bq.png"); }
+#br1 { background-image: url("/img/br.png"); }
+#br2 { background-image: url("/img/br.png"); }
+#bn1 { background-image: url("/img/bn.png"); }
+#bn2 { background-image: url("/img/bn.png"); }
+#bb1 { background-image: url("/img/bb.png"); }
+#bb2 { background-image: url("/img/bb.png"); }
+#bp1 { background-image: url("/img/bp.png"); }
+#bp2 { background-image: url("/img/bp.png"); }
+#bp3 { background-image: url("/img/bp.png"); }
+#bp4 { background-image: url("/img/bp.png"); }
+#bp5 { background-image: url("/img/bp.png"); }
+#bp6 { background-image: url("/img/bp.png"); }
+#bp7 { background-image: url("/img/bp.png"); }
+#bp8 { background-image: url("/img/bp.png"); }
+#wk { background-image: url("/img/wk.png"); }
+#wq { background-image: url("/img/wq.png"); }
+#wr1 { background-image: url("/img/wr.png"); }
+#wr2 { background-image: url("/img/wr.png"); }
+#wn1 { background-image: url("/img/wn.png"); }
+#wn2 { background-image: url("/img/wn.png"); }
+#wb1 { background-image: url("/img/wb.png"); }
+#wb2 { background-image: url("/img/wb.png"); }
+#wp1 { background-image: url("/img/wp.png"); }
+#wp2 { background-image: url("/img/wp.png"); }
+#wp3 { background-image: url("/img/wp.png"); }
+#wp4 { background-image: url("/img/wp.png"); }
+#wp5 { background-image: url("/img/wp.png"); }
+#wp6 { background-image: url("/img/wp.png"); }
+#wp7 { background-image: url("/img/wp.png"); }
+#wp8 { background-image: url("/img/wp.png"); }
+
+.row8, .row7 {
+    z-index: 5;
+    width: 45px;
+    height: 45px;
+    position: relative;
+    float: left;
+    left: 0px;
+    top: 0px;
+}
+
+.row1, .row2 {
+    z-index: 5;
+    width: 45px;
+    height: 45px;
+    position: relative;
+    float: left;
+    left: 0px;
+    top: 180px;
+}
