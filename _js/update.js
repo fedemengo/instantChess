@@ -10,8 +10,14 @@ $(function () {
         var take = "";
         var elem = document.getElementById(data.piece);
         // update the position attributes
-        if (data.piece[0] != color)
+        if (data.piece[0] != color){
             elem.setAttribute("style", "left: " + data.posX + "px; top: " + data.posY + "px;");
+            Array.from(document.getElementsByClassName("disabled")).forEach(function (entry) {
+                var classes = entry.getAttribute('class').split(" ");
+                entry.setAttribute("class", "draggable " + classes[1]);
+            });
+        }
+
         if(data.take){
             take = "x";
             document.getElementById(data.take).setAttribute("style", "visibility: hidden");

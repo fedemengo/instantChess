@@ -40,6 +40,16 @@ interact('.draggable')
 				oldRow: oldData.x,
 				oldCol: oldData.y
 			});
+
+			Array.from(document.getElementsByClassName("draggable")).forEach(function (entry) {
+				var classes = entry.getAttribute('class').split(" ");
+				entry.setAttribute("class", "disabled " + classes[1]);
+			});
+
+			//for(var entry in draggables){
+				//var classes = entry.getAttribute('class').split(" ");
+				//
+			//}
 		}
 	});
 

@@ -33,14 +33,9 @@ body { font-family: 'Mukta Mahee', sans-serif; }
 #bn2 { background-image: url("/_img/bn.png"); }
 #bb1 { background-image: url("/_img/bb.png"); }
 #bb2 { background-image: url("/_img/bb.png"); }
-#bp1 { background-image: url("/_img/bp.png"); }
-#bp2 { background-image: url("/_img/bp.png"); }
-#bp3 { background-image: url("/_img/bp.png"); }
-#bp4 { background-image: url("/_img/bp.png"); }
-#bp5 { background-image: url("/_img/bp.png"); }
-#bp6 { background-image: url("/_img/bp.png"); }
-#bp7 { background-image: url("/_img/bp.png"); }
-#bp8 { background-image: url("/_img/bp.png"); }
+#bp1, #bp2, #bp3, #bp4, #bp5, #bp6, #bp7, #bp8 {
+    background-image: url("/_img/bp.png");
+}
 #wk { background-image: url("/_img/wk.png"); }
 #wq { background-image: url("/_img/wq.png"); }
 #wr1 { background-image: url("/_img/wr.png"); }
@@ -49,14 +44,9 @@ body { font-family: 'Mukta Mahee', sans-serif; }
 #wn2 { background-image: url("/_img/wn.png"); }
 #wb1 { background-image: url("/_img/wb.png"); }
 #wb2 { background-image: url("/_img/wb.png"); }
-#wp1 { background-image: url("/_img/wp.png"); }
-#wp2 { background-image: url("/_img/wp.png"); }
-#wp3 { background-image: url("/_img/wp.png"); }
-#wp4 { background-image: url("/_img/wp.png"); }
-#wp5 { background-image: url("/_img/wp.png"); }
-#wp6 { background-image: url("/_img/wp.png"); }
-#wp7 { background-image: url("/_img/wp.png"); }
-#wp8 { background-image: url("/_img/wp.png"); }
+#wp1, #wp2, #wp3, #wp4, #wp5, #wp6, #wp7, #wp8 {
+    background-image: url("/_img/wp.png");
+}
 
 .row8, .row7 {
     z-index: 5;
