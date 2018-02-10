@@ -31,25 +31,22 @@ interact('.draggable')
 			var data = position(target, parseInt(Math.round(x/45)), parseInt(Math.round(y/45)));
 			flag = 0;
 
-			sendWithSocket("move", {
-				piece: target.id,
-				posX: -x,
-				posY: -y,
-				row: data.x,
-				col: data.y,
-				oldRow: oldData.x,
-				oldCol: oldData.y
-			});
+			if(!(data.x == oldData.x && data.y == oldData.y)){
+				sendWithSocket("move", {
+					piece: target.id,
+					posX: -x,
+					posY: -y,
+					row: data.x,
+					col: data.y,
+					oldRow: oldData.x,
+					oldCol: oldData.y
+				});
 
-			Array.from(document.getElementsByClassName("draggable")).forEach(function (entry) {
-				var classes = entry.getAttribute('class').split(" ");
-				entry.setAttribute("class", "disabled " + classes[1]);
-			});
-
-			//for(var entry in draggables){
-				//var classes = entry.getAttribute('class').split(" ");
-				//
-			//}
+				Array.from(document.getElementsByClassName("draggable")).forEach(function (entry) {
+					var classes = entry.getAttribute('class').split(" ");
+					entry.setAttribute("class", "disabled " + classes[1]);
+				});
+			}
 		}
 	});
 
