@@ -10,6 +10,12 @@ $(function () {
         var take = "";
         var elem = document.getElementById(data.piece);
         // update the position attributes
+        if(data.piece[0] == 'w'){
+            $("#move").text("Black move");
+        } else {
+            $("#move").text("White move");
+        }
+
         if (data.piece[0] != color){
             elem.setAttribute("style", "left: " + data.posX + "px; top: " + data.posY + "px;");
             Array.from(document.getElementsByClassName("disabled")).forEach(function (entry) {
