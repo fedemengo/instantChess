@@ -41,7 +41,7 @@ io.on('connection', function(socket){
 	console.log("New connection:\t\t" + socket.id);
     socket.on('move', function(data){
         console.log("socket: move");
-        console.log(log(data.piece) + ": [" + data.col + ", " + data.row + "]\n");
+        console.log(log(data.piece) + ": " + data.col + data.row + "\n");
 
         // remove position of old piece
         for(var key in board)
@@ -73,14 +73,13 @@ function log(data) {
         string += "black ";
     }
     switch(data[1]){
-        case 'p': string += "pawn "; break;
-        case 'r': string += "rook "; break;
-        case 'n': string += "knigth "; break;
-        case 'b': string += "bishop "; break;
-        case 'q': string += "queen "; break;
-        case 'k': string += "king "; break;
+        case 'p': string += "pawn"; break;
+        case 'r': string += "rook"; break;
+        case 'n': string += "knigth"; break;
+        case 'b': string += "bishop"; break;
+        case 'q': string += "queen"; break;
+        case 'k': string += "king"; break;
     }
-    string += data[2];
     return string;
 }
 
