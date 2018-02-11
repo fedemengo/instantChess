@@ -1,4 +1,4 @@
-var color, socket, colors = {"w": "White", "b": "Black"};
+var color, socket, colors = {"w": "White", "b": "Black"}, nextMove = {"w": "Black", "b": "White"};
 $(function () {
     socket = io();
     socket.on("notify", function (data) {
@@ -10,7 +10,7 @@ $(function () {
         color = String($("#player-color").text()).split(" ")[0];
 
 		// update player turn
-        $("#move").text(data.nextmove + " move");
+        $("#move").text(nextMove[data.pieceID[0]] + " move");
 
 		// if the move is from the other player then update  board
         if (colors[data.pieceID[0]] != color){
