@@ -11,23 +11,17 @@ h3 { margin: 10px 5px; }
 
 #bk { background-image: url("/_img/bk.png"); }
 #bq { background-image: url("/_img/bq.png"); }
-#br1 { background-image: url("/_img/br.png"); }
-#br2 { background-image: url("/_img/br.png"); }
-#bn1 { background-image: url("/_img/bn.png"); }
-#bn2 { background-image: url("/_img/bn.png"); }
-#bb1 { background-image: url("/_img/bb.png"); }
-#bb2 { background-image: url("/_img/bb.png"); }
+#br1, #br2 { background-image: url("/_img/br.png"); }
+#bn1, #bn2 { background-image: url("/_img/bn.png"); }
+#bb1, #bb2 { background-image: url("/_img/bb.png"); }
 #bp1, #bp2, #bp3, #bp4, #bp5, #bp6, #bp7, #bp8 {
     background-image: url("/_img/bp.png");
 }
 #wk { background-image: url("/_img/wk.png"); }
 #wq { background-image: url("/_img/wq.png"); }
-#wr1 { background-image: url("/_img/wr.png"); }
-#wr2 { background-image: url("/_img/wr.png"); }
-#wn1 { background-image: url("/_img/wn.png"); }
-#wn2 { background-image: url("/_img/wn.png"); }
-#wb1 { background-image: url("/_img/wb.png"); }
-#wb2 { background-image: url("/_img/wb.png"); }
+#wr1, #wr2 { background-image: url("/_img/wr.png"); }
+#wn1, #wn2 { background-image: url("/_img/wn.png"); }
+#wb1, #wb2 { background-image: url("/_img/wb.png"); }
 #wp1, #wp2, #wp3, #wp4, #wp5, #wp6, #wp7, #wp8 {
     background-image: url("/_img/wp.png");
 }
