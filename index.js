@@ -20,9 +20,7 @@ var board = {
     "E8": "bk", "F8": "bb1", "G8": "bn1", "H8": "br1",
     "A7": "bp8", "B7": "bp7", "C7": "bp6", "D7": "bp5",
     "E7": "bp4", "F7": "bp3", "G7": "bp2", "H7": "bp1"
-};
-
-var current_board = {};
+}, current_board = {};
 
 app.get('/', function(req, res){
 	res.redirect('/play?id=' + String(sha1(req)).substring(0, 15) + '&c=w');
@@ -41,20 +39,20 @@ io.on('connection', function(socket){
 	console.log("New connection:\t\t" + socket.id);
     socket.on('move', function(data){
         console.log("socket: move");
-        console.log(log(data.piece) + ": " + data.col + data.row + "\n");
+        console.log(log(data.pieceID) + ": " + data.col[1] + data.row[1] + "\n");
 
         // remove position of old piece
         for(var key in board)
-            if(board[key] == data.piece)
+            if(board[key] == data.pieceID)
                 delete board[key];
 
         // check if takes
-        if(board[data.col + data.row] != null){
-            data.take = board[data.col + data.row];
+        if(board[data.col[1] + data.row[1]] != null){
+            data.take = board[data.col[1] + data.row[1]];
         }
 
         // update position
-        board[data.col + data.row] = data.piece;
+        board[data.col[1] + data.row[1]] = data.pieceID;
         io.emit('notify', data);
     });
     

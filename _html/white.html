@@ -8,16 +8,14 @@
     <script type="text/javascript" src="../_js/drag.js"></script>
     <script type="text/javascript" src="../_js/update.js"></script>
     <script>
-        $(function () {
-            document.getElementById('url').innerHTML = window.location.href.split("c=")[0] + "c=b";
-        });
+        $(function () { $("#url").text(window.location.href.split("c=")[0] + "c=b"); });
     </script>
 </head>
 <body>
     <div class="main-div">
         <div style="text-align: center; float: left; width: 400px;">
             <h1>Play!</h1>
-            <h3>White player</h3>
+            <h3 id="player-color">White player</h3>
             <div id="board">
                 <div id="br2" class="row8" col="A" row="8"></div>
                 <div id="bn2" class="row8" col="B" row="8"></div>

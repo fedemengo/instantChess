@@ -1,38 +1,41 @@
-var color = window.location.search.split("c=")[1];
-var socket;
+var color, socket, colors = {"w": "White", "b": "Black"};
 $(function () {
     socket = io();
     socket.on("notify", function (data) {
 
-        console.log("[" + data.piece[1].toUpperCase() + data.oldCol.toLowerCase() + data.oldRow + "]");
-        console.log("[" + data.col.toLowerCase() + data.row + "]");
+        console.log("[" + data.pieceID[1].toUpperCase() + data.col[0].toLowerCase() + data.row[0] + "]");
+        console.log("[" + data.pieceID[1].toUpperCase() + data.col[1].toLowerCase() + data.row[1] + "]");
 
-        var take = "", elem = document.getElementById(data.piece);
+        var take = "", elem = $("#" + data.pieceID)[0];
+        color = String($("#player-color").text()).split(" ")[0];
 
-		// update the position attributes
-        data.piece[0] == 'w' ? $("#move").text("Black move") : $("#move").text("White move");
+		// update player turn
+        $("#move").text(data.nextmove + " move");
 
-		// if the move is from other player then update  board
-        if (data.piece[0] != color){
-            elem.setAttribute("style", "left: " + data.posX + "px; top: " + data.posY + "px;");
-            Array.from(document.getElementsByClassName("disabled")).forEach(function (entry) {
-                var classes = entry.getAttribute('class').split(" ");
-                entry.setAttribute("class", "draggable " + classes[1]);
+		// if the move is from the other player then update  board
+        if (colors[data.pieceID[0]] != color){
+            $(elem).attr("style", "left: " + data.posX + "px; top: " + data.posY + "px;");
+
+            // renable the possibility to move
+            Array.from($(".disabled")).forEach(function (entry) {
+                var classes = $(entry).attr('class').split(" ");
+                $(entry).attr("class", "draggable " + classes[1]);
             });
         }
 
+        // if take hide the taken piece
         if(data.take){
             take = "x";
-            document.getElementById(data.take).setAttribute("style", "visibility: hidden");
+            $($("#" + data.take)[0]).attr("style", "visibility: hidden");
         }
 
-        var newMove = data.piece[1].toUpperCase() + data.oldCol.toLowerCase() + data.oldRow + "-" + take + data.col.toLowerCase() + data.row;
-        if(data.piece[0] == 'w'){
-            jQuery('<li></li>', {
-                text: newMove
-            }).appendTo('#list');
+        var newMove = data.pieceID[1].toUpperCase() + data.col[0].toLowerCase() + data.row[0] + "-" + take + data.col[1].toLowerCase() + data.row[1];
+
+        // update move listing
+        if(colors[data.pieceID[0]] == 'White'){
+            $('<li></li>', { text: newMove }).appendTo('#list');
         } else {
-            $('#list').find('li')[$('#list').find('li').length-1].textContent += ", " + newMove;
+            $("#list").find("li")[$("#list").find("li").length-1].textContent += ", " + newMove;
         }
     });
 });
