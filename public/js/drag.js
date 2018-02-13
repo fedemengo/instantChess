@@ -64,11 +64,10 @@ interact('.draggable')
                     entry.className = 'disabled ' + entry.className.split(' ')[1];
                 });
             } else {
-                var oldCoord = oldPos;
                 // move the piece to its original position
-                target.style.webkitTransform = target.style.transform = 'translate(' + oldCoord.row + 'px, ' + oldCoord.col + 'px)';
-                target.setAttribute('data-x', oldCoord.row);
-                target.setAttribute('data-y', oldCoord.col);
+                target.style.webkitTransform = target.style.transform = 'translate(' + oldPos.row + 'px, ' + oldPos.col + 'px)';
+                target.setAttribute('data-x', oldPos.row);
+                target.setAttribute('data-y', oldPos.col);
             }
         });
         target.style.zIndex = 5;
