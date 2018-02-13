@@ -14,8 +14,8 @@ $(function () {
 
 		// if the move is from the other player then update  board
         if (colors[data.pieceID[0]] != color){
-            elem.style.left = data.posX;
-            elem.style.top = data.posY;
+            elem.style.left = data.x;
+            elem.style.top = data.y;
 
             // re-enable the possibility to move
             Array.from($('.disabled')).forEach(function (entry) {

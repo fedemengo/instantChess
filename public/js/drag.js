@@ -1,10 +1,10 @@
-var flag = 0, oldPos, oldData;
+var flag = 0, oldPos, oldCoords;
 // target elements with the 'draggable' class
 interact('.draggable')
 
 .draggable({
     // enable inertial throwing
-    inertia: true,
+    //inertia: true,
     // keep the element within the area of it's parent
     restrict: { restriction: 'parent', endOnly: true, elementRect: { top: 0, left: 0, bottom: 1, right: 1 } },
     // enable autoScroll
@@ -14,20 +14,20 @@ interact('.draggable')
     onmove: function (event) {
         // keep the dragged position in the data-x/data-y attributes
         var target = event.target,
-            x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx,
-            y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+            row = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx,
+            col = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
 
         // update attribute
-        target.style.webkitTransform = target.style.transform = 'translate(' + x + 'px, ' + y + 'px)';
-        target.setAttribute('data-x', x);
-        target.setAttribute('data-y', y);
+        target.style.webkitTransform = target.style.transform = 'translate(' + row + 'px, ' + col + 'px)';
+        target.setAttribute('data-x', row);
+        target.setAttribute('data-y', col);
 
         // store the original position
         if(!flag){
             flag = 1;
             target.style.zIndex = 6;
-            oldPos = { x: Math.round(x/45)*45, y: Math.round(y/45)*45 };
-            oldCoords = coordinate(target, parseInt(Math.round(x/45)), parseInt(Math.round(y/45)));
+            oldPos = { row: Math.round(row/45)*45, col: Math.round(col/45)*45 };
+            oldCoords = coordinate(target, Math.round(row/45), Math.round(col/45));
         }
     },
 
@@ -35,41 +35,40 @@ interact('.draggable')
     onend: function (event) {
         flag = 0;
         var target = event.target,
-            x = Math.round((parseFloat(target.getAttribute('data-x')))/45)*45,
-            y = Math.round((parseFloat(target.getAttribute('data-y')))/45)*45;
+            row = Math.round((parseFloat(target.getAttribute('data-x')))/45)*45,
+            col = Math.round((parseFloat(target.getAttribute('data-y')))/45)*45;
 
-        var coords = coordinate(target, parseInt(Math.round(x/45)), parseInt(Math.round(y/45)));
+        var coords = coordinate(target, Math.round(row/45), Math.round(col/45));
 
-        console.log('[' + oldPos.x + ', ' + oldPos.y + '] - [' + x + ', ' + y + ']');
+        console.log('[' + oldPos.row + ', ' + oldPos.col + '] - [' + row + ', ' + col + ']');
 
         $.post('/validate', {
             pieceID: target.id,
-            oldPos: oldCoords,
-            newPos: coords
+            oldCoords: oldCoords,
+            newCoords: coords
         }, function(valid){
             if(valid){
-                target.style.webkitTransform = target.style.transform = 'translate(' + x + 'px, ' + y + 'px)';
-                target.setAttribute('data-x', x);
-                target.setAttribute('data-y', y);
+                target.style.webkitTransform = target.style.transform = 'translate(' + row + 'px, ' + col + 'px)';
+                target.setAttribute('data-x', row);
+                target.setAttribute('data-y', col);
 
-                if(!(coords.x == oldCoords.x && coords.y == oldCoords.y)){
-                    sendWithSocket('move', {
-                        pieceID: target.id,
-                        posX: -x,
-                        posY: -y,
-                        row: [oldCoords.x, coords.x],
-                        col: [oldCoords.y, coords.y]
-                    });
+                sendWithSocket('move', {
+                    pieceID: target.id,
+                    x: -row,
+                    y: -col,
+                    row: [oldCoords.row, coords.row],
+                    col: [oldCoords.col, coords.col]
+                });
 
-                    Array.from($('.draggable')).forEach(function (entry) {
-                        entry.className = 'disabled ' + entry.className.split(' ')[1];
-                    });
-                }
+                Array.from($('.draggable')).forEach(function (entry) {
+                    entry.className = 'disabled ' + entry.className.split(' ')[1];
+                });
             } else {
-                var Oldx = Math.round(oldPos.x/45)*45, Oldy = Math.round(oldPos.y/45)*45;
-                target.style.webkitTransform = target.style.transform = 'translate(' + Oldx + 'px, ' + Oldy + 'px)';
-                target.setAttribute('data-x', Oldx);
-                target.setAttribute('data-y', Oldy);
+                var oldCoord = oldPos;
+                // move the piece to its original position
+                target.style.webkitTransform = target.style.transform = 'translate(' + oldCoord.row + 'px, ' + oldCoord.col + 'px)';
+                target.setAttribute('data-x', oldCoord.row);
+                target.setAttribute('data-y', oldCoord.col);
             }
         });
         target.style.zIndex = 5;
@@ -79,7 +78,7 @@ interact('.draggable')
 function coordinate(target, colSkip, rowSkip){
     target.id[0] == 'b' ? colSkip = -colSkip : rowSkip = -rowSkip;
 	return {
-		x: parseInt(target.getAttribute('row')) + rowSkip,
-		y: String.fromCharCode(target.getAttribute('col').charCodeAt(0) + colSkip)
+		row: parseInt(target.getAttribute('row')) + rowSkip,
+		col: String.fromCharCode(target.getAttribute('col').charCodeAt(0) + colSkip)
 	};
 }
