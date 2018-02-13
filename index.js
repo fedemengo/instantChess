@@ -49,8 +49,8 @@ app.get('/play', function (req, res) {
 });
 
 app.post('/validate', function (req, res) {
-    console.log("\nAttempt to move to " + JSON.stringify(req.body.newPos));
-    validatePosition(current_board, req.body.pieceID, {row: req.body.oldPos.x, col: req.body.oldPos.y}, {row: req.body.newPos.x, col: req.body.newPos.y}, function (isValid) {
+    console.log("Attempt to move to " + req.body.newCoords.col + req.body.newCoords.row + "\n");
+    validatePosition(current_board, req.body.pieceID, req.body.oldCoords, req.body.newCoords, function (isValid) {
         console.log(isValid + "\n");
         res.send(isValid);
     });
@@ -59,14 +59,15 @@ app.post('/validate', function (req, res) {
 io.on('connection', function(socket){
 	console.log("New connection:\t\t" + socket.id);
     socket.on('move', function(data){
-        console.log("socket: move");
+        console.log("socket: MOVE");
         console.log(data);
-        //console.log(parse(data.pieceID) + ": " + data.col[1] + data.row[1] + "\n");
 
         // remove position of old piece
-        for(var key in current_board)
-            if(current_board[key] == data.pieceID)
+        for(var key in current_board) {
+            if (current_board[key] == data.pieceID) {
                 delete current_board[key];
+            }
+        }
 
         // check if takes
         if(current_board[data.col[1] + data.row[1]] != null){
@@ -74,7 +75,6 @@ io.on('connection', function(socket){
         }
 
         // update position
-        console.log("Update position to " + data.col[1] + data.row[1]);
         current_board[data.col[1] + data.row[1]] = data.pieceID;
         io.emit('notify', data);
     });
@@ -102,10 +102,9 @@ function shallowCopy(oldObj) {
 
 function parse(pieceID) {
     var string = "";
-    if(pieceID[0] == 'w'){
-        string += "white ";
-    } else {
-        string += "black ";
+    switch(pieceID[0]){
+        case 'w': string += "White"; break;
+        case 'b': string += "Black"; break;
     }
     switch(pieceID[1]){
         case 'p': string += "pawn"; break;
@@ -121,7 +120,12 @@ function parse(pieceID) {
 function validatePosition(board, pieceID, from, to, callback) {
     var result = true;
 
+    // if there is a piece of the same color, no piece can move there
     if(board[to.col + to.row] && board[to.col + to.row][0] == pieceID[0]){
+        result = false;
+    }
+    // if move to the same square, then don't move at all
+    if(from.row == to.row && from.col == to.col){
         result = false;
     }
 
@@ -130,34 +134,12 @@ function validatePosition(board, pieceID, from, to, callback) {
 
     switch(pieceID[1]){
         case 'p':
-            // if takesv
-            var dist = 1;
-            if(!current_board.firstMove.has(pieceID)){
-                dist = 2;
-                current_board.firstMove.add(pieceID);
-            }
-            if(from.col == to.col){
-                if(pieceID[0] == 'w'){
-                    if(to.row - from.row > dist || to.row - from.row < 0 || board[to.col + to.row])
-                        result = false;
-                } else {
-                    if(from.row - to.row > dist || from.row - to.row < 0 || board[to.col + to.row])
-                        result = false;
-                }
-            } else if(from.col != to.col) {
-                if (pieceID[0] == 'w') {
-                    if (to.row - from.row != 1)
-                        result = false;
-                } else if(pieceID[0] == 'b'){
-                    if (from.row - to.row != 1)
-                        result = false
-                }
-                if((!board[to.col + to.row]) || (board[to.col + to.row] && board[to.col + to.row][0] == pieceID[0])) {
-                    result = false;
-                }
-            }
+            if(pawn(board, pieceID, from, to))
+                result = false;
             break;
         case 'r':
+            if(rook(board, pieceID, from, to))
+                result = false;
             break;
         case 'n':
             break;
@@ -168,5 +150,71 @@ function validatePosition(board, pieceID, from, to, callback) {
         case 'k':
             break;
     }
+
+    if(result){
+        current_board.firstMove.add(pieceID);
+    }
     callback(result);
+}
+
+function pawn(board, pieceID, from, to) {
+    var dist = 1;
+    if(!current_board.firstMove.has(pieceID)){
+        dist = 2;
+    }
+    if(from.col == to.col){
+        if(pieceID[0] == 'w'){
+            if(to.row - from.row > dist || to.row - from.row < 0 || board[to.col + to.row]){
+                return true;
+            }
+        } else {
+            if(from.row - to.row > dist || from.row - to.row < 0 || board[to.col + to.row]){
+                return true;
+            }
+        }
+    } else if(from.col != to.col) {
+        if (pieceID[0] == 'w') {
+            if (to.row - from.row != 1) {
+                return true;
+            }
+        } else if(pieceID[0] == 'b'){
+            if (from.row - to.row != 1) {
+                return true;
+            }
+        }
+        if((!board[to.col + to.row]) || (board[to.col + to.row] && board[to.col + to.row][0] == pieceID[0])) {
+            return true;
+        }
+    }
+}
+
+function rook(board, pieceID, from, to) {
+    if(from.col != to.col && from.row != to.row) {
+        return true;
+    }
+    if(from.col == to.col){
+        for(var i = Math.min(from.row, to.row)+1; i<Math.max(from.row, to.row); ++i){
+            if(board[from.col + i]) {
+                return true;
+            }
+        }
+        if(Math.min(from.row, to.row) != from.row){
+            if(board[to.col + to.row] && board[to.col + to.row][0] == pieceID[0]) {
+                return true;
+            }
+        }
+    } else {
+        var min = Math.min(from.col.charCodeAt(0), to.col.charCodeAt(0))+1;
+        var max = Math.max(from.col.charCodeAt(0), to.col.charCodeAt(0));
+        for(var i = min; i<max; ++i){
+            if(board[String.fromCharCode(i) + from.row]) {
+                return true;
+            }
+        }
+        if(Math.min(from.col, to.col) != from.col){
+            if(board[to.col + to.row] && board[to.col + to.row][0] == pieceID[0]) {
+                return true;
+            }
+        }
+    }
 }
