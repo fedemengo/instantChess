@@ -18,6 +18,8 @@
 - [x] One move per turn
 - [x] Take back a move (replace piece to its square)
 - [ ] Check for allowed moves
+	- [x] piece of the same color can't take each other
+	- [ ] other
 - [x] Respectable GUI
 - [ ] Super amazing GUI
 - [ ] Multiple games
