@@ -16,7 +16,7 @@
 - [x] Traditional moves listing
 - [x] General refactoring
 - [x] One move per turn
-- [x] Take back a move (replace piece to its square)
+- [x] Take back a move (place piece back to its square)
 - [ ] Check for allowed moves
 	- [x] piece of the same color can't take each other
 	- [x] Pawns (no promotion)
