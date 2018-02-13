@@ -3,7 +3,10 @@
   "version": "0.0.1",
   "description": "Ready to go chess matches",
   "dependencies": {
+    "body-parser": "^1.18.2",
     "express": "^4.15.2",
+    "path": "^0.12.7",
+    "pug": "^2.0.0-rc.4",
     "sha1": "^1.1.1",
     "socket.io": "^2.0.4"
   }
