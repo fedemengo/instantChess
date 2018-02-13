@@ -20,6 +20,7 @@
 - [ ] Check for allowed moves
 	- [x] piece of the same color can't take each other
 	- [x] Pawns (no promotion)
+	- [x] Rooks
 	- [ ] other
 - [x] Respectable GUI
 - [ ] Super amazing GUI
