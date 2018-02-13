@@ -2,9 +2,16 @@ body { font-family: 'Mukta Mahee', sans-serif; }
 h1 { margin: 0 0; }
 h3 { margin: 10px 5px; }
 
-#board {
+#boardW {
     display: inline-block;
-    background-image: url("/img/_board.png");
+    background-image: url("/img/boardW.png");
+    width: 360px;
+    height: 360px;
+}
+
+#boardB {
+    display: inline-block;
+    background-image: url("/img/boardB.png");
     width: 360px;
     height: 360px;
 }
