@@ -26,20 +26,13 @@ var board = {
     "A8": "br2", "B8": "bn2", "C8": "bb2", "D8": "bq",
     "E8": "bk", "F8": "bb1", "G8": "bn1", "H8": "br1",
     "A7": "bp8", "B7": "bp7", "C7": "bp6", "D7": "bp5",
-    "E7": "bp4", "F7": "bp3", "G7": "bp2", "H7": "bp1"
+    "E7": "bp4", "F7": "bp3", "G7": "bp2", "H7": "bp1",
+    firstMove: {}
 }, current_board = {};
 
 var boards = {};
 
-function shallowCopy(oldObj) {
-    var newObj = {};
-    for(var i in oldObj) {
-        if(oldObj.hasOwnProperty(i)) {
-            newObj[i] = oldObj[i];
-        }
-    }
-    return newObj;
-}
+//###################### REQUESTS ###############################
 
 app.get('/', function(req, res){
 	res.redirect('/play?id=' + String(sha1(JSON.stringify(req.headers))).substring(0, 15) + '&c=w');
@@ -48,6 +41,7 @@ app.get('/', function(req, res){
 app.get('/play', function (req, res) {
     if(req.query.c == 'w'){
         current_board = shallowCopy(board);
+        current_board.firstMove = new Set();
         res.render('white');
     } else {
         res.render('black');
@@ -55,14 +49,11 @@ app.get('/play', function (req, res) {
 });
 
 app.post('/validate', function (req, res) {
-    var position = req.body.position;
-    var color = req.body.color;
-    console.log("\nAttempt to mote to " + position);
-    if(current_board[position] && current_board[position][0] == color){
-        res.send(false);
-    } else {
-        res.send(true);
-    }
+    console.log("\nAttempt to move to " + JSON.stringify(req.body.newPos));
+    validatePosition(current_board, req.body.pieceID, {row: req.body.oldPos.x, col: req.body.oldPos.y}, {row: req.body.newPos.x, col: req.body.newPos.y}, function (isValid) {
+        console.log(isValid + "\n");
+        res.send(isValid);
+    });
 });
 
 io.on('connection', function(socket){
@@ -83,6 +74,7 @@ io.on('connection', function(socket){
         }
 
         // update position
+        console.log("Update position to " + data.col[1] + data.row[1]);
         current_board[data.col[1] + data.row[1]] = data.pieceID;
         io.emit('notify', data);
     });
@@ -92,16 +84,30 @@ io.on('connection', function(socket){
     });
 });
 
-function parse(data) {
-    if(data == undefined)
-        return "undefined";
+http.listen(3000, function(){
+    console.log('listening on localhost:3000');
+});
+
+//###################### FUNCTIONS ###############################
+
+function shallowCopy(oldObj) {
+    var newObj = {};
+    for(var i in oldObj) {
+        if(oldObj.hasOwnProperty(i)) {
+            newObj[i] = oldObj[i];
+        }
+    }
+    return newObj;
+}
+
+function parse(pieceID) {
     var string = "";
-    if(data[0] == 'w'){
+    if(pieceID[0] == 'w'){
         string += "white ";
     } else {
         string += "black ";
     }
-    switch(data[1]){
+    switch(pieceID[1]){
         case 'p': string += "pawn"; break;
         case 'r': string += "rook"; break;
         case 'n': string += "knigth"; break;
@@ -112,6 +118,55 @@ function parse(data) {
     return string;
 }
 
-http.listen(3000, function(){
-    console.log('listening on localhost:3000');
-});
+function validatePosition(board, pieceID, from, to, callback) {
+    var result = true;
+
+    if(board[to.col + to.row] && board[to.col + to.row][0] == pieceID[0]){
+        result = false;
+    }
+
+    console.log(from);
+    console.log(to);
+
+    switch(pieceID[1]){
+        case 'p':
+            // if takesv
+            var dist = 1;
+            if(!current_board.firstMove.has(pieceID)){
+                dist = 2;
+                current_board.firstMove.add(pieceID);
+            }
+            if(from.col == to.col){
+                if(pieceID[0] == 'w'){
+                    if(to.row - from.row > dist || to.row - from.row < 0 || board[to.col + to.row])
+                        result = false;
+                } else {
+                    if(from.row - to.row > dist || from.row - to.row < 0 || board[to.col + to.row])
+                        result = false;
+                }
+            } else if(from.col != to.col) {
+                if (pieceID[0] == 'w') {
+                    if (to.row - from.row != 1)
+                        result = false;
+                } else if(pieceID[0] == 'b'){
+                    if (from.row - to.row != 1)
+                        result = false
+                }
+                if((!board[to.col + to.row]) || (board[to.col + to.row] && board[to.col + to.row][0] == pieceID[0])) {
+                    result = false;
+                }
+            }
+            break;
+        case 'r':
+            break;
+        case 'n':
+            break;
+        case 'b':
+            break;
+        case 'q':
+            break;
+        case 'k':
+            break;
+    }
+    callback(result);
+}

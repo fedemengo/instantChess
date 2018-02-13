@@ -19,6 +19,7 @@
 - [x] Take back a move (replace piece to its square)
 - [ ] Check for allowed moves
 	- [x] piece of the same color can't take each other
+	- [x] Pawns (no promotion)
 	- [ ] other
 - [x] Respectable GUI
 - [ ] Super amazing GUI

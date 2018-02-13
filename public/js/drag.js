@@ -42,7 +42,11 @@ interact('.draggable')
 
         console.log('[' + oldPos.x + ', ' + oldPos.y + '] - [' + x + ', ' + y + ']');
 
-        $.post('/validate', { position: coords.y + coords.x, color: target.id[0] }, function(valid){
+        $.post('/validate', {
+            pieceID: target.id,
+            oldPos: oldCoords,
+            newPos: coords
+        }, function(valid){
             if(valid){
                 target.style.webkitTransform = target.style.transform = 'translate(' + x + 'px, ' + y + 'px)';
                 target.setAttribute('data-x', x);
