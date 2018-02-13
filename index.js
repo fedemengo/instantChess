@@ -1,14 +1,21 @@
+//###################### INCLUDES ###############################
 var app = require('express')();
+var bodyParser = require('body-parser');
+var express = require('express');
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
-var express = require('express');
+var path = require('path');
 var sha1 = require('sha1');
 
-app.use("/_img", express.static(__dirname + '/_img'));
-app.use("/_html", express.static(__dirname + '/_html'));
-app.use("/_js", express.static(__dirname + '/_js'));
-app.use("/_style", express.static(__dirname + '/_style'));
-app.use("/node_modules/socket.io-client/dist/", express.static(__dirname + '/node_modules/socket.io-client/dist/'));
+//###################### SETTING ###############################
+
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
+
+app.set('view engine', 'pug');
+app.use(express.static(path.join(__dirname, 'public')));
+
+//###################### VARIABLES ###############################
 
 var board = {
     "A1": "wr1", "B1": "wn1", "C1": "wb1", "D1": "wq",
@@ -22,16 +29,39 @@ var board = {
     "E7": "bp4", "F7": "bp3", "G7": "bp2", "H7": "bp1"
 }, current_board = {};
 
+var boards = {};
+
+function shallowCopy(oldObj) {
+    var newObj = {};
+    for(var i in oldObj) {
+        if(oldObj.hasOwnProperty(i)) {
+            newObj[i] = oldObj[i];
+        }
+    }
+    return newObj;
+}
+
 app.get('/', function(req, res){
-	res.redirect('/play?id=' + String(sha1(req)).substring(0, 15) + '&c=w');
+	res.redirect('/play?id=' + String(sha1(JSON.stringify(req.headers))).substring(0, 15) + '&c=w');
 });
 
 app.get('/play', function (req, res) {
     if(req.query.c == 'w'){
-        current_board = board;
-        res.sendFile(__dirname + '/_html/white.html');
+        current_board = shallowCopy(board);
+        res.render('white');
     } else {
-        res.sendFile(__dirname + '/_html/black.html');
+        res.render('black');
+    }
+});
+
+app.post('/validate', function (req, res) {
+    var position = req.body.position;
+    var color = req.body.color;
+    console.log("\nAttempt to mote to " + position);
+    if(current_board[position] && current_board[position][0] == color){
+        res.send(false);
+    } else {
+        res.send(true);
     }
 });
 
@@ -39,20 +69,21 @@ io.on('connection', function(socket){
 	console.log("New connection:\t\t" + socket.id);
     socket.on('move', function(data){
         console.log("socket: move");
-        console.log(log(data.pieceID) + ": " + data.col[1] + data.row[1] + "\n");
+        console.log(data);
+        //console.log(parse(data.pieceID) + ": " + data.col[1] + data.row[1] + "\n");
 
         // remove position of old piece
-        for(var key in board)
-            if(board[key] == data.pieceID)
-                delete board[key];
+        for(var key in current_board)
+            if(current_board[key] == data.pieceID)
+                delete current_board[key];
 
         // check if takes
-        if(board[data.col[1] + data.row[1]] != null){
-            data.take = board[data.col[1] + data.row[1]];
+        if(current_board[data.col[1] + data.row[1]] != null){
+            data.take = current_board[data.col[1] + data.row[1]];
         }
 
         // update position
-        board[data.col[1] + data.row[1]] = data.pieceID;
+        current_board[data.col[1] + data.row[1]] = data.pieceID;
         io.emit('notify', data);
     });
     
@@ -61,7 +92,7 @@ io.on('connection', function(socket){
     });
 });
 
-function log(data) {
+function parse(data) {
     if(data == undefined)
         return "undefined";
     var string = "";
