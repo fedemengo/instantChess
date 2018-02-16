@@ -22,7 +22,6 @@ var board = {
     "E1": "wk", "F1": "wb2", "G1": "wn2", "H1": "wr2",
     "A2": "wp1", "B2": "wp2", "C2": "wp3", "D2": "wp4",
     "E2": "wp5", "F2": "wp6", "G2": "wp7", "H2": "wp8",
-
     "A8": "br2", "B8": "bn2", "C8": "bb2", "D8": "bq",
     "E8": "bk", "F8": "bb1", "G8": "bn1", "H8": "br1",
     "A7": "bp8", "B7": "bp7", "C7": "bp6", "D7": "bp5",
@@ -39,8 +38,8 @@ app.get('/', function(req, res){
 });
 
 app.get('/play', function (req, res) {
-    if(req.query.c == 'w'){
-        current_board = shallowCopy(board);
+    if(req.query.c == "w"){
+        current_board = Object.assign({}, board);
         current_board.firstMove = new Set();
         res.render('white');
     } else {
@@ -49,18 +48,17 @@ app.get('/play', function (req, res) {
 });
 
 app.post('/validate', function (req, res) {
-    console.log("Attempt to move to " + req.body.newCoords.col + req.body.newCoords.row + "\n");
+    console.log("attempt to move to " + req.body.newCoords.col + req.body.newCoords.row);
     validatePosition(current_board, req.body.pieceID, req.body.oldCoords, req.body.newCoords, function (isValid) {
-        console.log(isValid + "\n");
+        console.log((isValid ? "valid move" : "not valid move") + "\n");
         res.send(isValid);
     });
 });
 
 io.on('connection', function(socket){
-	console.log("New connection:\t\t" + socket.id);
+	console.log("Connection:\t\t" + socket.id);
     socket.on('move', function(data){
-        console.log("socket: MOVE");
-        console.log(data);
+        //console.log(data);
 
         // remove position of old piece
         for(var key in current_board) {
@@ -88,17 +86,7 @@ http.listen(3000, function(){
     console.log('listening on localhost:3000');
 });
 
-//###################### FUNCTIONS ###############################
-
-function shallowCopy(oldObj) {
-    var newObj = {};
-    for(var i in oldObj) {
-        if(oldObj.hasOwnProperty(i)) {
-            newObj[i] = oldObj[i];
-        }
-    }
-    return newObj;
-}
+//###################### UTILITY FUNCTIONS ###############################
 
 function parse(pieceID) {
     var string = "";
@@ -117,6 +105,10 @@ function parse(pieceID) {
     return string;
 }
 
+function compareTo(a, b){
+    return (a < b ? 1 : a > b ? -1 : 0);
+}
+
 function validatePosition(board, pieceID, from, to, callback) {
     var result = true;
 
@@ -125,7 +117,7 @@ function validatePosition(board, pieceID, from, to, callback) {
         result = false;
     }
     // if move to the same square, then don't move at all
-    if(from.row == to.row && from.col == to.col){
+    if(from.col == to.col && from.row == to.row){
         result = false;
     }
 
@@ -134,28 +126,28 @@ function validatePosition(board, pieceID, from, to, callback) {
 
     switch(pieceID[1]){
         case 'p':
-            if(pawn(board, pieceID, from, to))
-                result = false;
-            break;
+            result = result && pawn(board, pieceID, from, to); break;
         case 'r':
-            if(rook(board, pieceID, from, to))
-                result = false;
-            break;
+            result = result && rook(board, pieceID, from, to); break;
         case 'n':
-            break;
+            result = result && knight(from, to); break;
         case 'b':
-            break;
+            result = result && bishop(board, pieceID, from, to); break;
         case 'q':
-            break;
+            result = result && (rook(board, pieceID, from, to) || bishop(board, pieceID, from, to));
         case 'k':
             break;
     }
+
+    // check if King is in check
 
     if(result){
         current_board.firstMove.add(pieceID);
     }
     callback(result);
 }
+
+//###################### MOVES ###############################
 
 function pawn(board, pieceID, from, to) {
     var dist = 1;
@@ -165,56 +157,61 @@ function pawn(board, pieceID, from, to) {
     if(from.col == to.col){
         if(pieceID[0] == 'w'){
             if(to.row - from.row > dist || to.row - from.row < 0 || board[to.col + to.row]){
-                return true;
+                return false;
             }
         } else {
             if(from.row - to.row > dist || from.row - to.row < 0 || board[to.col + to.row]){
-                return true;
+                return false;
             }
         }
     } else if(from.col != to.col) {
         if (pieceID[0] == 'w') {
             if (to.row - from.row != 1) {
-                return true;
+                return false;
             }
         } else if(pieceID[0] == 'b'){
             if (from.row - to.row != 1) {
-                return true;
+                return false;
             }
         }
         if((!board[to.col + to.row]) || (board[to.col + to.row] && board[to.col + to.row][0] == pieceID[0])) {
-            return true;
+            return false;
         }
     }
+    return true;
 }
 
 function rook(board, pieceID, from, to) {
     if(from.col != to.col && from.row != to.row) {
-        return true;
+        return false;
     }
-    if(from.col == to.col){
-        for(var i = Math.min(from.row, to.row)+1; i<Math.max(from.row, to.row); ++i){
-            if(board[from.col + i]) {
-                return true;
-            }
-        }
-        if(Math.min(from.row, to.row) != from.row){
-            if(board[to.col + to.row] && board[to.col + to.row][0] == pieceID[0]) {
-                return true;
-            }
-        }
-    } else {
-        var min = Math.min(from.col.charCodeAt(0), to.col.charCodeAt(0))+1;
-        var max = Math.max(from.col.charCodeAt(0), to.col.charCodeAt(0));
-        for(var i = min; i<max; ++i){
-            if(board[String.fromCharCode(i) + from.row]) {
-                return true;
-            }
-        }
-        if(Math.min(from.col, to.col) != from.col){
-            if(board[to.col + to.row] && board[to.col + to.row][0] == pieceID[0]) {
-                return true;
-            }
+    return longMove(board, from, to);
+}
+
+function knight(from, to) {
+    var moveX = Math.abs(from.row-to.row);
+    var moveY = Math.abs(from.col.charCodeAt(0)-to.col.charCodeAt(0));
+    return ((moveX == 2 && moveY == 1) || (moveX == 1 && moveY == 2));
+}
+
+function bishop(board, pieceID, from, to) {
+    var fromCol = from.col.charCodeAt(0), toCol = to.col.charCodeAt(0);
+    if(from.col == to.col || from.row == to.row || Math.abs(fromCol-toCol) != Math.abs(from.row-to.row)) {
+        return false;
+    }
+    return longMove(board, from, to);
+}
+
+function longMove(board, from, to){
+    var incY = compareTo(from.col, to.col), incX = compareTo(from.row, to.row);
+    var minY = from.col.charCodeAt(0), maxY = to.col.charCodeAt(0);
+    var minX = from.row, maxX = to.row;
+
+    for(var i=minY+incY, j=parseInt(minX)+incX; i!=maxY || j!=maxX; i+=incY, j+=incX){
+        //console.log(String.fromCharCode(i) + j);
+        if(board[String.fromCharCode(i) + j]) {
+            return false;
         }
     }
+    return true;
 }

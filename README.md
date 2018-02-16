@@ -21,7 +21,11 @@
 	- [x] piece of the same color can't take each other
 	- [x] Pawns (no promotion)
 	- [x] Rooks
-	- [ ] other
+	- [x] Bishop
+	- [x] Knight
+	- [x] Queen (Rook || Bishop)
+	- [ ] King (castle!)
+	- [ ] moves should not put the king in check
 - [x] Respectable GUI
 - [ ] Super amazing GUI
 - [ ] Multiple games
