@@ -10,7 +10,7 @@ var validMove = {
 		// move forward - don't take OR move diagonal - attempt take
 		if(from.col == to.col){
 			// position is empty AND moved forward of right amount
-			return !board[to.col + to.row] && movementDist > 0 && movementDist < dist;
+			return !board[to.col + to.row] && movementDist > 0 && movementDist <= dist;
 		} else {
 			// row diagonal movement is exactly 1 AND position is not empty
 			return movementDist == 1 && board[to.col + to.row];

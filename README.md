@@ -12,7 +12,7 @@
 
 ### Features
 
-- [x] Moves listing: Long algebraic notation (even more pedant)
+- [x] Moves listing: Long algebraic notation
 - [ ] Recognize valid moves (in progress)
 - [ ] Mutliple games at once (on the same server)
 - [ ] Close and resume a game

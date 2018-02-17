@@ -1,4 +1,4 @@
-var flag = 0, oldPos, oldCoords;
+var flag = 0, oldPos, oldCoords, SQUARE_SIZE = 45;
 // target elements with the "draggable" class
 interact(".draggable")
 
@@ -26,8 +26,8 @@ interact(".draggable")
         if(!flag){
             flag = 1;
             target.style.zIndex = 6;
-            oldPos = { row: Math.round(row/45)*45, col: Math.round(col/45)*45 };
-            oldCoords = coordinate(target, Math.round(row/45), Math.round(col/45));
+            oldPos = { row: Math.round(row/SQUARE_SIZE)*SQUARE_SIZE, col: Math.round(col/SQUARE_SIZE)*SQUARE_SIZE };
+            oldCoords = coordinate(target, row/SQUARE_SIZE, col/SQUARE_SIZE);
         }
     },
 
@@ -35,10 +35,10 @@ interact(".draggable")
     onend: function (event) {
         flag = 0;
         var target = event.target,
-            row = Math.round((parseFloat(target.getAttribute("data-x")))/45)*45,
-            col = Math.round((parseFloat(target.getAttribute("data-y")))/45)*45;
+            row = Math.round((parseFloat(target.getAttribute("data-x")))/SQUARE_SIZE)*SQUARE_SIZE,
+            col = Math.round((parseFloat(target.getAttribute("data-y")))/SQUARE_SIZE)*SQUARE_SIZE;
 
-        var coords = coordinate(target, Math.round(row/45), Math.round(col/45));
+        var coords = coordinate(target, row/SQUARE_SIZE, col/SQUARE_SIZE);
 
         console.log("[" + oldPos.row + ", " + oldPos.col + "] - [" + row + ", " + col + "]");
 
@@ -77,7 +77,7 @@ interact(".draggable")
 function coordinate(target, colSkip, rowSkip){
     target.id[0] == "b" ? colSkip = -colSkip : rowSkip = -rowSkip;
 	return {
-		row: parseInt(target.getAttribute("row")) + rowSkip,
-		col: String.fromCharCode(target.getAttribute("col").charCodeAt(0) + colSkip)
+		row: Math.round(parseInt(target.getAttribute("row")) + rowSkip),
+		col: String.fromCharCode(Math.round(target.getAttribute("col").charCodeAt(0) + colSkip))
 	};
 }
