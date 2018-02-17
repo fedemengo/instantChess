@@ -6,6 +6,7 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var path = require('path');
 var sha1 = require('sha1');
+var validMove = require('./valid-move');
 
 //###################### SETTING ###############################
 
@@ -105,10 +106,6 @@ function parse(pieceID) {
     return string;
 }
 
-function compareTo(a, b){
-    return (a < b ? 1 : a > b ? -1 : 0);
-}
-
 function validatePosition(board, pieceID, from, to, callback) {
     var result = true;
 
@@ -126,15 +123,15 @@ function validatePosition(board, pieceID, from, to, callback) {
 
     switch(pieceID[1]){
         case 'p':
-            result = result && pawn(board, pieceID, from, to); break;
+            result = result && validMove.pawn(board, pieceID, from, to); break;
         case 'r':
-            result = result && rook(board, pieceID, from, to); break;
+            result = result && validMove.rook(board, pieceID, from, to); break;
         case 'n':
-            result = result && knight(from, to); break;
+            result = result && validMove.knight(from, to); break;
         case 'b':
-            result = result && bishop(board, pieceID, from, to); break;
+            result = result && validMove.bishop(board, pieceID, from, to); break;
         case 'q':
-            result = result && (rook(board, pieceID, from, to) || bishop(board, pieceID, from, to));
+            result = result && validMove.queen(board, pieceID, from, to); break;
         case 'k':
             break;
     }
@@ -145,73 +142,4 @@ function validatePosition(board, pieceID, from, to, callback) {
         current_board.firstMove.add(pieceID);
     }
     callback(result);
-}
-
-//###################### MOVES ###############################
-
-function pawn(board, pieceID, from, to) {
-    var dist = 1;
-    if(!current_board.firstMove.has(pieceID)){
-        dist = 2;
-    }
-    if(from.col == to.col){
-        if(pieceID[0] == 'w'){
-            if(to.row - from.row > dist || to.row - from.row < 0 || board[to.col + to.row]){
-                return false;
-            }
-        } else {
-            if(from.row - to.row > dist || from.row - to.row < 0 || board[to.col + to.row]){
-                return false;
-            }
-        }
-    } else if(from.col != to.col) {
-        if (pieceID[0] == 'w') {
-            if (to.row - from.row != 1) {
-                return false;
-            }
-        } else if(pieceID[0] == 'b'){
-            if (from.row - to.row != 1) {
-                return false;
-            }
-        }
-        if((!board[to.col + to.row]) || (board[to.col + to.row] && board[to.col + to.row][0] == pieceID[0])) {
-            return false;
-        }
-    }
-    return true;
-}
-
-function rook(board, pieceID, from, to) {
-    if(from.col != to.col && from.row != to.row) {
-        return false;
-    }
-    return longMove(board, from, to);
-}
-
-function knight(from, to) {
-    var moveX = Math.abs(from.row-to.row);
-    var moveY = Math.abs(from.col.charCodeAt(0)-to.col.charCodeAt(0));
-    return ((moveX == 2 && moveY == 1) || (moveX == 1 && moveY == 2));
-}
-
-function bishop(board, pieceID, from, to) {
-    var fromCol = from.col.charCodeAt(0), toCol = to.col.charCodeAt(0);
-    if(from.col == to.col || from.row == to.row || Math.abs(fromCol-toCol) != Math.abs(from.row-to.row)) {
-        return false;
-    }
-    return longMove(board, from, to);
-}
-
-function longMove(board, from, to){
-    var incY = compareTo(from.col, to.col), incX = compareTo(from.row, to.row);
-    var minY = from.col.charCodeAt(0), maxY = to.col.charCodeAt(0);
-    var minX = from.row, maxX = to.row;
-
-    for(var i=minY+incY, j=parseInt(minX)+incX; i!=maxY || j!=maxX; i+=incY, j+=incX){
-        //console.log(String.fromCharCode(i) + j);
-        if(board[String.fromCharCode(i) + j]) {
-            return false;
-        }
-    }
-    return true;
 }
