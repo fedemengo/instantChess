@@ -35,11 +35,13 @@ var boards = {};
 //###################### REQUESTS ###############################
 
 app.get("/", function(req, res){
-	res.redirect("/play?id=" + String(sha1(JSON.stringify(req.headers))).substring(0, 15) + "&c=w");
+	res.redirect("/play?id=" + String(sha1(JSON.stringify(req.headers))).substring(0, 15) + "0");
 });
 
 app.get("/play", function (req, res) {
-	if(req.query.c == "w"){
+	var id = req.query.id;
+	console.log(id);
+	if(id[id.length-1] == "0"){
 		currentBoard = Object.assign({}, board);
 		currentBoard.firstMove = new Set();
 		res.render("white", {});
@@ -133,7 +135,7 @@ function validatePosition(board, pieceID, from, to, callback) {
 		case "q":
 			result = result && validMove.queen(board, pieceID, from, to); break;
 		case "k":
-			break;
+			result = result && validMove.king(board, pieceID, from, to); break;
 	}
 
 	// check if King is in check

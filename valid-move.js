@@ -35,6 +35,11 @@ var validMove = {
 	queen: function (board, pieceID, from, to) {
 		return validMove.rook(board, pieceID, from, to) || validMove.bishop(board, pieceID, from, to);
 	},
+	king: function (board, pieceID, from, to) {
+		var moveX = Math.abs(parseInt(from.row)-parseInt(to.row)),
+			moveY = Math.abs(from.col.charCodeAt(0)-to.col.charCodeAt(0));
+		return moveX <= 1 && moveY <= 1;
+	},
 	longMove: function (board, from, to){
 		var incY = compareTo(from.col, to.col), incX = compareTo(from.row, to.row),
 			minY = from.col.charCodeAt(0), maxY = to.col.charCodeAt(0),
