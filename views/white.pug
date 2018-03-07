@@ -8,7 +8,10 @@ html
     script(type='text/javascript', src='js/drag.js')
     script(type='text/javascript', src='js/update.js')
     script.
-      $(function () { $("#url").text(window.location.href.split("c=")[0] + "c=b"); });
+      $(function () {
+      	var current_url = window.location.href;
+      	$("#url").text(current_url.substr(0, current_url.length-1) + '1');
+      });
   body
     .main-div
       div(style='text-align: center; float: left; width: 400px;')
