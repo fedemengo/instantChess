@@ -34,24 +34,19 @@ app.get("/play", function (req, res) {
 		game[gameID] = new Chess();
 	}
 
+	var turn = game[gameID].turn() == "w" ? "white" : "black";
+
 	if(id.slice(-1) == "0"){
-		res.render("player", {color: "white", status: game[gameID].board()});
+		res.render("player", {color: "white", status: game[gameID].board(), turn: turn});
 	} else {
-		res.render("player", {color: "black", status: game[gameID].board()});
+		res.render("player", {color: "black", status: game[gameID].board(), turn: turn});
 	}
 });
 
 app.post("/validate", function (req, res) {
-	console.log("attempt " + req.body.oldPos.col + req.body.oldPos.row + " " + req.body.newPos.col + req.body.newPos.row);
-	var lol = getJsonFromUrl(req.body.gameID, function (params) {
+	getJsonFromUrl(req.body.gameID, function (params) {
 		var move = req.body.oldPos.col + req.body.oldPos.row + req.body.newPos.col + req.body.newPos.row;
-
-		console.log(params["id"]);
-		console.log(game[params["id"]].moves());
-
 		var moveResult = game[params["id"]].move(move, {sloppy: true});
-
-		console.log(moveResult);
 
 		if(moveResult){
 			res.send({ "valid": true, "data": moveResult});
