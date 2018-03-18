@@ -1,8 +1,8 @@
 html
     head
-        link(href='https://fonts.googleapis.com/css?family=Mukta+Mahee', rel='stylesheet')
-        link(href='style/style.css', rel='stylesheet', type='text/css', media='all')
-        link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css')
+        link(href='style/Mukta-Mahee.css', rel='stylesheet')
+        link(href='style/bootstrap.min.css', rel='stylesheet')
+        link(href='style/style.css', rel='stylesheet')
         script(type='text/javascript', src='js/jquery.min.js')
         script(type='text/javascript', src="js/bootstrap.min.js")
         script(type='text/javascript', src='js/socket.io.js')
@@ -37,8 +37,8 @@ html
                                                             style="left:" + (7 - col) * 45 + "px; top:" + (7 - row) * 45 + "px"
                                                             col=String.fromCharCode(97 + col) row=8 - row color=status[row][col].color)
             .moves
-                h3#move White move
+                h3#move #{turn} move
                 ol#list
         .main-div
             .alert.alert-info
-                a#url(href='#', data-dismiss='alert')
+                a#url()
