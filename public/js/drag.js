@@ -65,18 +65,14 @@ interact(".draggable")
 		console.log(newCoords);
 
         $.post("/validate", {
-            pieceID: target.id,
             oldPos: oldPos,
 			newPos: newPos,
 			gameID: window.location.search.substr(1).slice(0, -1)
         }, function(valid){
             if(valid.valid){
 
-				console.log("VALID");
-            	//console.log(valid.data);
 
                 target.style.webkitTransform = target.style.transform = "translate(0px, 0px)";
-
                 target.style.left = parseInt(target.style.left.slice(0, -2)) + parseInt(x) + "px";
 				target.style.top = parseInt(target.style.top.slice(0, -2)) + parseInt(y) + "px";
 
@@ -95,14 +91,10 @@ interact(".draggable")
                 });
 
                 Array.from($(".draggable")).forEach(function (entry) {
-                    entry.className = "disabled " + entry.className.split(" ").splice(1).reduce((a, b) => a + " " + b);
+                	entry.classList.add("disabled");
+					entry.classList.remove("draggable");
                 });
             } else {
-            	console.log("NOT VALID");
-                // move the piece to its original position
-                //target.style.left = oldCoords.x + "px";
-				//target.style.top = oldCoords.y + "px";
-
 				target.style.webkitTransform = target.style.transform = "translate(0px, 0px)";
                 target.setAttribute("x", "0px");
                 target.setAttribute("y", "0px");
@@ -113,8 +105,6 @@ interact(".draggable")
 });
 
 function coord2Pos(target, x, y, oldPos) {
-	console.log("DAMN")
-	console.log(target.attributes);
 	target.attributes.color.value === "b" ? x = -x : y = -y;
 	return {
 		col: String.fromCharCode(oldPos.col.charCodeAt(0) + parseInt(x)),
