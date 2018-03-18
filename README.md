@@ -1,4 +1,4 @@
-## Online chess v-2.0
+## Online chess
 
 #### v-2.0 using [chess.js](https://github.com/jhlywa/chess.js)
 
@@ -14,8 +14,6 @@
 
 ### Features
 
--	[x] Moves listing: Long algebraic notation
--	[x] Recognize valid moves (in progress)
 -	[ ] Mutliple games at once (on the same server)
 -	[ ] Close and resume a game
 
