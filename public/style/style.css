@@ -2,56 +2,40 @@ body { font-family: 'Mukta Mahee', sans-serif; }
 h1 { margin: 0 0; }
 h3 { margin: 10px 5px; }
 
-#boardW {
-    display: inline-block;
-    background-image: url("/img/boardW.png");
+#white-board {
+    position: relative;
+    background-image: url("/img/white-board.png");
     width: 360px;
     height: 360px;
 }
 
-#boardB {
-    display: inline-block;
-    background-image: url("/img/boardB.png");
+#black-board {
+    position: relative;
+    background-image: url("/img/black-board.png");
     width: 360px;
     height: 360px;
 }
 
-#bk { background-image: url("/img/bk.png"); }
-#bq { background-image: url("/img/bq.png"); }
-#br1, #br2 { background-image: url("/img/br.png"); }
-#bn1, #bn2 { background-image: url("/img/bn.png"); }
-#bb1, #bb2 { background-image: url("/img/bb.png"); }
-#bp1, #bp2, #bp3, #bp4, #bp5, #bp6, #bp7, #bp8 {
-    background-image: url("/img/bp.png");
-}
-#wk { background-image: url("/img/wk.png"); }
-#wq { background-image: url("/img/wq.png"); }
-#wr1, #wr2 { background-image: url("/img/wr.png"); }
-#wn1, #wn2 { background-image: url("/img/wn.png"); }
-#wb1, #wb2 { background-image: url("/img/wb.png"); }
-#wp1, #wp2, #wp3, #wp4, #wp5, #wp6, #wp7, #wp8 {
-    background-image: url("/img/wp.png");
-}
-
-.row8, .row7 {
-    z-index: 5;
+.piece {
+    z-index: 1;
+    position: absolute;
     width: 45px;
     height: 45px;
-    position: relative;
-    float: left;
-    left: 0;
-    top: 0;
 }
 
-.row1, .row2 {
-    z-index: 5;
-    width: 45px;
-    height: 45px;
-    position: relative;
-    float: left;
-    left: 0;
-    top: 180px;
-}
+.kb { background-image: url("/img/bk.png"); }
+.qb { background-image: url("/img/bq.png"); }
+.rb { background-image: url("/img/br.png"); }
+.nb { background-image: url("/img/bn.png"); }
+.bb { background-image: url("/img/bb.png"); }
+.pb { background-image: url("/img/bp.png"); }
+
+.kw { background-image: url("/img/wk.png"); }
+.qw { background-image: url("/img/wq.png"); }
+.rw { background-image: url("/img/wr.png"); }
+.nw { background-image: url("/img/wn.png"); }
+.bw { background-image: url("/img/wb.png"); }
+.pw { background-image: url("/img/wp.png"); }
 
 .moves {
     border-radius: 10px;

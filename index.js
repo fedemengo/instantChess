@@ -6,7 +6,7 @@ var http = require("http").Server(app);
 var io = require("socket.io")(http);
 var path = require("path");
 var sha1 = require("sha1");
-var validMove = require("./valid-move");
+var Chess = require('./chess.min').Chess;
 
 //###################### SETTING ###############################
 
@@ -18,19 +18,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 //###################### VARIABLES ###############################
 
-var board = {
-	"A1": "wr1", "B1": "wn1", "C1": "wb1", "D1": "wq",
-	"E1": "wk", "F1": "wb2", "G1": "wn2", "H1": "wr2",
-	"A2": "wp1", "B2": "wp2", "C2": "wp3", "D2": "wp4",
-	"E2": "wp5", "F2": "wp6", "G2": "wp7", "H2": "wp8",
-	"A8": "br2", "B8": "bn2", "C8": "bb2", "D8": "bq",
-	"E8": "bk", "F8": "bb1", "G8": "bn1", "H8": "br1",
-	"A7": "bp8", "B7": "bp7", "C7": "bp6", "D7": "bp5",
-	"E7": "bp4", "F7": "bp3", "G7": "bp2", "H7": "bp1",
-	firstMove: {}
-}, currentBoard = {};
-
-var boards = {};
+var game = {};
 
 //###################### REQUESTS ###############################
 
@@ -40,43 +28,43 @@ app.get("/", function(req, res){
 
 app.get("/play", function (req, res) {
 	var id = req.query.id;
-	console.log(id);
-	if(id[id.length-1] == "0"){
-		currentBoard = Object.assign({}, board);
-		currentBoard.firstMove = new Set();
-		res.render("white", {});
+	var gameID = id.slice(0, -1);
+
+	if(!game.hasOwnProperty(gameID)){
+		game[gameID] = new Chess();
+	}
+
+	if(id.slice(-1) == "0"){
+		res.render("player", {color: "white", status: game[gameID].board()});
 	} else {
-		res.render("black", {});
+		res.render("player", {color: "black", status: game[gameID].board()});
 	}
 });
 
 app.post("/validate", function (req, res) {
-	console.log("attempt to move to " + req.body.newCoords.col + req.body.newCoords.row);
-	validatePosition(currentBoard, req.body.pieceID, req.body.oldCoords, req.body.newCoords, function (isValid) {
-		console.log((isValid ? "valid move" : "not valid move") + "\n");
-		res.send(isValid);
+	console.log("attempt " + req.body.oldPos.col + req.body.oldPos.row + " " + req.body.newPos.col + req.body.newPos.row);
+	var lol = getJsonFromUrl(req.body.gameID, function (params) {
+		var move = req.body.oldPos.col + req.body.oldPos.row + req.body.newPos.col + req.body.newPos.row;
+
+		console.log(params["id"]);
+		console.log(game[params["id"]].moves());
+
+		var moveResult = game[params["id"]].move(move, {sloppy: true});
+
+		console.log(moveResult);
+
+		if(moveResult){
+			res.send({ "valid": true, "data": moveResult});
+		} else {
+			res.send({ "valid": false, "data": {}});
+		}
 	});
 });
 
 io.on("connection", function(socket){
 	console.log("Connection:\t\t" + socket.id);
 	socket.on("move", function(data){
-		//console.log(data);
-
-		// remove position of old piece
-		for(var key in currentBoard) {
-			if (currentBoard[key] == data.pieceID) {
-				delete currentBoard[key];
-			}
-		}
-
-		// check if takes
-		if(currentBoard[data.col[1] + data.row[1]] != null){
-			data.take = currentBoard[data.col[1] + data.row[1]];
-		}
-
-		// update position
-		currentBoard[data.col[1] + data.row[1]] = data.pieceID;
+		console.log(data);
 		io.emit("notify", data);
 	});
 
@@ -91,57 +79,11 @@ http.listen(3000, function(){
 
 //###################### UTILITY FUNCTIONS ###############################
 
-function parse(pieceID) {
-	var string = "";
-	switch(pieceID[0]){
-		case "w": string += "White"; break;
-		case "b": string += "Black"; break;
-	}
-	switch(pieceID[1]){
-		case "p": string += "pawn"; break;
-		case "r": string += "rook"; break;
-		case "n": string += "knigth"; break;
-		case "b": string += "bishop"; break;
-		case "q": string += "queen"; break;
-		case "k": string += "king"; break;
-	}
-	return string;
-}
-
-function validatePosition(board, pieceID, from, to, callback) {
-	var result = true;
-
-	// if there is a piece of the same color, no piece can move there
-	if(board[to.col + to.row] && board[to.col + to.row][0] == pieceID[0]){
-		result = false;
-	}
-	// if move to the same square, then don"t move at all
-	if(from.col == to.col && from.row == to.row){
-		result = false;
-	}
-
-	console.log(from);
-	console.log(to);
-
-	switch(pieceID[1]){
-		case "p":
-			result = result && validMove.pawn(board, pieceID, from, to); break;
-		case "r":
-			result = result && validMove.rook(board, pieceID, from, to); break;
-		case "n":
-			result = result && validMove.knight(from, to); break;
-		case "b":
-			result = result && validMove.bishop(board, pieceID, from, to); break;
-		case "q":
-			result = result && validMove.queen(board, pieceID, from, to); break;
-		case "k":
-			result = result && validMove.king(board, pieceID, from, to); break;
-	}
-
-	// check if King is in check
-
-	if(result){
-		currentBoard.firstMove.add(pieceID);
-	}
+function getJsonFromUrl(params, callback) {
+	var result = {};
+	params.split("&").forEach(function(part) {
+		var item = part.split("=");
+		result[item[0]] = decodeURIComponent(item[1]);
+	});
 	callback(result);
 }

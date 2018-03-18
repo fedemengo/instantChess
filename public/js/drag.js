@@ -1,4 +1,4 @@
-var flag = 0, oldPos, oldCoords, SQUARE_SIZE = 45;
+var flag = 0, oldCoords, oldPos, newPos, SQUARE_SIZE = 45;
 // target elements with the "draggable" class
 interact(".draggable")
 
@@ -12,72 +12,112 @@ interact(".draggable")
 
     // call this function on every dragmove event
     onmove: function (event) {
-        // keep the dragged position in the data-x/data-y attributes
-        var target = event.target,
-            row = (parseFloat(target.getAttribute("data-x")) || 0) + event.dx,
-            col = (parseFloat(target.getAttribute("data-y")) || 0) + event.dy;
+        // keep the dragged position in the x/y attributes
+        var target = event.target;
+
+		// store the original position
+		if(!flag){
+			flag = 1;
+			target.style.zIndex = "6";
+			oldCoords = {
+				x: target.style.left.slice(0, -2),
+				y: target.style.top.slice(0, -2)
+			};
+			oldPos = {
+				col: target.attributes.col.value,
+				row: target.attributes.row.value
+			};
+			console.log("Init");
+			console.log(oldCoords);
+			console.log(oldPos);
+		}
+
+        var x = (parseFloat(target.getAttribute("x")) || 0) + event.dx,
+            y = (parseFloat(target.getAttribute("y")) || 0) + event.dy;
 
         // update attribute
-        target.style.webkitTransform = target.style.transform = "translate(" + row + "px, " + col + "px)";
-        target.setAttribute("data-x", row);
-        target.setAttribute("data-y", col);
-
-        // store the original position
-        if(!flag){
-            flag = 1;
-            target.style.zIndex = 6;
-            oldPos = { row: Math.round(row/SQUARE_SIZE)*SQUARE_SIZE, col: Math.round(col/SQUARE_SIZE)*SQUARE_SIZE };
-            oldCoords = coordinate(target, row/SQUARE_SIZE, col/SQUARE_SIZE);
-        }
+        target.style.webkitTransform = target.style.transform = "translate(" + x + "px, " + y + "px)";
+        target.setAttribute("x", x);
+        target.setAttribute("y", y);
     },
 
     // call this function on every drag-end event
     onend: function (event) {
         flag = 0;
-        var target = event.target,
-            row = Math.round((parseFloat(target.getAttribute("data-x")))/SQUARE_SIZE)*SQUARE_SIZE,
-            col = Math.round((parseFloat(target.getAttribute("data-y")))/SQUARE_SIZE)*SQUARE_SIZE;
+        var target = event.target;
 
-        var coords = coordinate(target, row/SQUARE_SIZE, col/SQUARE_SIZE);
+        var x = Math.round((parseFloat(target.getAttribute("x")))/SQUARE_SIZE)*SQUARE_SIZE,
+            y = Math.round((parseFloat(target.getAttribute("y")))/SQUARE_SIZE)*SQUARE_SIZE;
 
-        console.log("[" + oldPos.row + ", " + oldPos.col + "] - [" + row + ", " + col + "]");
+        //console.log(x + " " + y);
+		newCoords = {
+			x: x,
+			y: y
+		};
+
+        newPos = coord2Pos(target, x/SQUARE_SIZE, y/SQUARE_SIZE, oldPos);
+
+        //console.log("[" + oldPos.row + ", " + oldPos.col + "] - [" + row + ", " + col + "]");
+        //console.log(row + " " + col);
+
+		console.log("Final");
+		console.log(newPos);
+		console.log(newCoords);
 
         $.post("/validate", {
             pieceID: target.id,
-            oldCoords: oldCoords,
-            newCoords: coords
+            oldPos: oldPos,
+			newPos: newPos,
+			gameID: window.location.search.substr(1).slice(0, -1)
         }, function(valid){
-            if(valid){
-                target.style.webkitTransform = target.style.transform = "translate(" + row + "px, " + col + "px)";
-                target.setAttribute("data-x", row);
-                target.setAttribute("data-y", col);
+            if(valid.valid){
+
+				console.log("VALID");
+            	//console.log(valid.data);
+
+                target.style.webkitTransform = target.style.transform = "translate(0px, 0px)";
+
+                target.style.left = parseInt(target.style.left.slice(0, -2)) + parseInt(x) + "px";
+				target.style.top = parseInt(target.style.top.slice(0, -2)) + parseInt(y) + "px";
+
+				target.setAttribute("row", newPos.row);
+                target.setAttribute("col", newPos.col);
+				target.setAttribute("x", "0px");
+				target.setAttribute("y", "0px");
 
                 sendWithSocket("move", {
-                    pieceID: target.id,
-                    x: -row,
-                    y: -col,
-                    row: [oldCoords.row, coords.row],
-                    col: [oldCoords.col, coords.col]
+                	pieceID: target.id,
+                    x: -Math.round(x/SQUARE_SIZE),
+                    y: -Math.round(y/SQUARE_SIZE),
+                    row: [oldPos.row, newPos.row],
+                    col: [oldPos.col, newPos.col],
+					moveResult: valid.data
                 });
 
                 Array.from($(".draggable")).forEach(function (entry) {
-                    entry.className = "disabled " + entry.className.split(" ")[1];
+                    entry.className = "disabled " + entry.className.split(" ").splice(1).reduce((a, b) => a + " " + b);
                 });
             } else {
+            	console.log("NOT VALID");
                 // move the piece to its original position
-                target.style.webkitTransform = target.style.transform = "translate(" + oldPos.row + "px, " + oldPos.col + "px)";
-                target.setAttribute("data-x", oldPos.row);
-                target.setAttribute("data-y", oldPos.col);
+                //target.style.left = oldCoords.x + "px";
+				//target.style.top = oldCoords.y + "px";
+
+				target.style.webkitTransform = target.style.transform = "translate(0px, 0px)";
+                target.setAttribute("x", "0px");
+                target.setAttribute("y", "0px");
             }
         });
-        target.style.zIndex = 5;
+        target.style.zIndex = "5";
     }
 });
 
-function coordinate(target, colSkip, rowSkip){
-    target.id[0] == "b" ? colSkip = -colSkip : rowSkip = -rowSkip;
+function coord2Pos(target, x, y, oldPos) {
+	console.log("DAMN")
+	console.log(target.attributes);
+	target.attributes.color.value === "b" ? x = -x : y = -y;
 	return {
-		row: Math.round(parseInt(target.getAttribute("row")) + rowSkip),
-		col: String.fromCharCode(Math.round(target.getAttribute("col").charCodeAt(0) + colSkip))
-	};
+		col: String.fromCharCode(oldPos.col.charCodeAt(0) + parseInt(x)),
+		row: (parseInt(oldPos.row) + y).toString()
+	}
 }
