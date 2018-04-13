@@ -1,6 +1,10 @@
 var color, socket, colors = {"w": "white", "b": "black"}, nextMove = {"w": "black", "b": "white"};
 $(function () {
-	$("#url")[0].text = window.location.href.slice(0, -1) + "1";
+    // banner displaying opponent's url
+    if(!parseInt(window.location.href.slice(-1)))
+		$("#url")[0].text = window.location.href.slice(0, -1) + "1";
+	else
+		$(".alert.alert-info")[0].remove();
     socket = io();
     socket.on("notify", function (data) {
 

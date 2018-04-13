@@ -37,9 +37,19 @@ app.get("/play", function (req, res) {
 	var turn = game[gameID].turn() == "w" ? "white" : "black";
 
 	if(id.slice(-1) == "0"){
-		res.render("player", {color: "white", status: game[gameID].board(), turn: turn});
+		res.render("player", {
+			color: "white",
+			status: game[gameID].board(),
+			turn: turn,
+			history: game[gameID].history()
+		});
 	} else {
-		res.render("player", {color: "black", status: game[gameID].board(), turn: turn});
+		res.render("player", {
+			color: "black",
+			status: game[gameID].board(),
+			turn: turn,
+			history: game[gameID].history()
+		});
 	}
 });
 
