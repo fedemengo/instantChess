@@ -11,7 +11,7 @@ interact(".draggable")
     autoScroll: true,
 
     // call this function on every dragmove event
-    onmove: function (event) {
+    onmove: event => {
         // keep the dragged position in the x/y attributes
         var target = event.target;
 
@@ -42,7 +42,7 @@ interact(".draggable")
     },
 
     // call this function on every drag-end event
-    onend: function (event) {
+    onend: event => {
         flag = 0;
         var target = event.target;
 
@@ -68,9 +68,8 @@ interact(".draggable")
             oldPos: oldPos,
 			newPos: newPos,
 			gameID: window.location.search.substr(1).slice(0, -1)
-        }, function(valid){
+        }, (valid) => {
             if(valid.valid){
-
 
                 target.style.webkitTransform = target.style.transform = "translate(0px, 0px)";
                 target.style.left = parseInt(target.style.left.slice(0, -2)) + parseInt(x) + "px";
@@ -90,7 +89,7 @@ interact(".draggable")
 					moveResult: valid.data
                 });
 
-                Array.from($(".draggable")).forEach(function (entry) {
+                Array.from($(".draggable")).forEach((entry) => {
                 	entry.classList.add("disabled");
 					entry.classList.remove("draggable");
                 });
@@ -104,7 +103,7 @@ interact(".draggable")
     }
 });
 
-function coord2Pos(target, x, y, oldPos) {
+coord2Pos = (target, x, y, oldPos) => {
 	target.attributes.color.value === "b" ? x = -x : y = -y;
 	return {
 		col: String.fromCharCode(oldPos.col.charCodeAt(0) + parseInt(x)),

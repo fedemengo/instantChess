@@ -14,7 +14,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
 app.set("view engine", "pug");
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(__dirname + "/public"));
 
 //###################### VARIABLES ###############################
 
@@ -22,11 +22,11 @@ var game = {};
 
 //###################### REQUESTS ###############################
 
-app.get("/", function(req, res){
+app.get("/", (req, res) => {
 	res.redirect("/play?id=" + String(sha1(JSON.stringify(req.headers))).substring(0, 15) + "0");
 });
 
-app.get("/play", function (req, res) {
+app.get("/play", (req, res) => {
 	var id = req.query.id;
 	var gameID = id.slice(0, -1);
 
@@ -53,8 +53,8 @@ app.get("/play", function (req, res) {
 	}
 });
 
-app.post("/validate", function (req, res) {
-	getJsonFromUrl(req.body.gameID, function (params) {
+app.post("/validate", (req, res) => {
+	getJsonFromUrl(req.body.gameID, params => {
 		var move = req.body.oldPos.col + req.body.oldPos.row + req.body.newPos.col + req.body.newPos.row;
 		var moveResult = game[params["id"]].move(move, {sloppy: true});
 
@@ -66,27 +66,27 @@ app.post("/validate", function (req, res) {
 	});
 });
 
-io.on("connection", function(socket){
+io.on("connection", socket => {
 	console.log("Connection:\t\t" + socket.id);
-	socket.on("move", function(data){
+	socket.on("move", data => {
 		console.log(data);
 		io.emit("notify", data);
 	});
 
-	socket.on("disconnect", function(){
+	socket.on("disconnect", () => {
 		console.log("Disconnected:\t\t" + socket.id);
 	});
 });
 
-http.listen(3000, function(){
+http.listen(3000, () => {
 	console.log("listening on localhost:3000");
 });
 
 //###################### UTILITY FUNCTIONS ###############################
 
-function getJsonFromUrl(params, callback) {
+getJsonFromUrl = (params, callback) => {
 	var result = {};
-	params.split("&").forEach(function(part) {
+	params.split("&").forEach(part => {
 		var item = part.split("=");
 		result[item[0]] = decodeURIComponent(item[1]);
 	});
