@@ -9,7 +9,7 @@ html
         script(type='text/javascript', src='js/interact.min.js')
         script(type='text/javascript', src='js/drag.js')
         script(type='text/javascript', src='js/update.js')
-    body
+    body(style="padding-top: 50px")
         .main-div
             div(style='text-align: center; float: left; width: 400px;')
                 h1 Play!
@@ -18,27 +18,17 @@ html
                     each row in [0, 1 , 2, 3, 4, 5, 6, 7]
                         each col in [0, 1 , 2, 3, 4, 5, 6, 7]
                             if status[row][col] != null
-                                if color === "white"
-                                    if status[row][col].color === color[0]
-                                        div.draggable.piece(class=status[row][col].type + status[row][col].color
-                                                            style="left:" + col*45 + "px; top:" + row*45 + "px"
-                                                            col=String.fromCharCode(97 + col) row=8 - row color=status[row][col].color)
-                                    else
-                                        div.piece(class=status[row][col].type + status[row][col].color
-                                                            style="left:" + col * 45 + "px; top:" + row * 45 + "px"
-                                                            col=String.fromCharCode(97 + col) row=8 - row color=status[row][col].color)
-                                else
-                                    if status[row][col].color === color[0]
-                                        div.draggable.piece(class=status[row][col].type + status[row][col].color
-                                                            style="left:" + (7 - col) * 45 + "px; top:" + (7 - row) * 45 + "px"
-                                                            col=String.fromCharCode(97 + col) row=8 - row color=status[row][col].color)
-                                    else
-                                        div.piece(class=status[row][col].type + status[row][col].color
-                                                            style="left:" + (7 - col) * 45 + "px; top:" + (7 - row) * 45 + "px"
-                                                            col=String.fromCharCode(97 + col) row=8 - row color=status[row][col].color)
+                                div.piece(class=status[row][col].type + status[row][col].color class=(status[row][col].color === color[0] ? "draggable" : "") 
+                                    style="left:" + ((color === "white" ? col : 7 - col)) * 45 + "px; top:" + ((color === "white" ? row : 7 - row)) * 45 + "px"
+                                    col=String.fromCharCode(97 + col) row=8 - row color=status[row][col].color)
             .moves
                 h3#move #{turn} move
                 ol#list
+                    each entry, index in history
+                        if index % 2 !== 0
+                            <li>#{history[index-1]}, #{history[index]}</li>
+                        else if !history[index+1]
+                            <li>#{history[index]}</li>
         .main-div
             .alert.alert-info
                 a#url()
