@@ -1,3 +1,4 @@
+//@ts-check
 //###################### INCLUDES ###############################
 var app = require("express")();
 var bodyParser = require("body-parser");
@@ -31,7 +32,7 @@ app.get("/play", (req, res) => {
 	var gameID = id.slice(0, -1);
 
 	if(!game.hasOwnProperty(gameID)){
-		game[gameID] = new Chess();
+		game[gameID] = Chess();
 	}
 
 	var turn = game[gameID].turn() == "w" ? "white" : "black";
