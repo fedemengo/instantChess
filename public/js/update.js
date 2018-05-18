@@ -28,10 +28,7 @@ $(() => {
             });
 
 			// re-enable the possibility to move
-            Array.from($(".disabled")).forEach(entry => {
-            	$(entry).removeClass("disabled");
-            	$(entry).addClass("draggable");
-			});
+            $(".disabled").removeClass("disabled").addClass("draggable");
         }
 
         // if take hide the taken piece

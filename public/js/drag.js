@@ -94,10 +94,8 @@ interact(".draggable")
 					"moveResult": res.data
                 });
 
-                Array.from($(".draggable")).forEach((entry) => {
-                	$(entry).addClass("disabled");
-					$(entry).removeClass("draggable");
-                });
+                $(".draggable").addClass("disabled").removeClass("draggable");
+
             } else {
                 $(target).css({
                     "webkitTransform": "translate(0px, 0px)",
